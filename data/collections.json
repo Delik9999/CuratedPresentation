@@ -1,0 +1,23 @@
+[
+  {
+    "id": "aurora",
+    "name": "Aurora Statement Pendants",
+    "heroVideoUrl": "https://player.vimeo.com/video/76979871",
+    "description": "Soft, sculptural pendants inspired by evening market vignettes.",
+    "sortOrder": 1
+  },
+  {
+    "id": "atelier",
+    "name": "Atelier Mixed-Media Sconces",
+    "heroVideoUrl": "https://www.youtube.com/embed/7NOSDKb0HlU",
+    "description": "Hand-applied finishes and artisan glass for boutique displays.",
+    "sortOrder": 2
+  },
+  {
+    "id": "vista",
+    "name": "Vista Outdoor Revival",
+    "heroVideoUrl": "https://player.vimeo.com/video/137857207",
+    "description": "Coastal-inspired outdoor lighting with resilient finishes.",
+    "sortOrder": 3
+  }
+]
