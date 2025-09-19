@@ -1,0 +1,168 @@
+[
+  {
+    "sku": "LIB-AUR-201",
+    "title": "Halo Arc Pendant 36\"",
+    "vendor": "Lib&Co",
+    "images": [
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80"
+    ],
+    "videoUrls": ["https://cdn.coverr.co/videos/coverr-modern-lights-7825/1080p.mp4"],
+    "specs": {
+      "Collection name": "Aurora",
+      "Number of Bulbs": 6,
+      "Finish": "Brushed Brass",
+      "size": "36\" dia",
+      "dimmable": true
+    },
+    "collectionId": "aurora",
+    "price": { "msrp": 1399, "dealerNet": 840, "map": 1299, "displayCost": 420 },
+    "isNewIntro": true,
+    "isMarketRecommended": true,
+    "active": true
+  },
+  {
+    "sku": "LIB-AUR-214",
+    "title": "Lumen Cascade Pendant",
+    "vendor": "Lib&Co",
+    "images": [
+      "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=800&q=80"
+    ],
+    "specs": {
+      "Collection name": "Aurora",
+      "Number of Bulbs": 4,
+      "Finish": "Frosted Nickel",
+      "size": "28\" h",
+      "dimmable": true
+    },
+    "collectionId": "aurora",
+    "price": { "msrp": 1199, "dealerNet": 720, "displayCost": 360 },
+    "isNewIntro": true,
+    "active": true
+  },
+  {
+    "sku": "SAV-AUR-305",
+    "title": "Savoy Aurora Drum",
+    "vendor": "Savoy House",
+    "images": [
+      "https://images.unsplash.com/photo-1600607687920-4e2a06f18d07?auto=format&fit=crop&w=800&q=80"
+    ],
+    "specs": {
+      "Collection name": "Aurora",
+      "Number of Bulbs": 5,
+      "Finish": "Cerused Oak",
+      "size": "24\" dia"
+    },
+    "collectionId": "aurora",
+    "price": { "msrp": 899, "dealerNet": 540, "displayCost": 270 },
+    "active": true
+  },
+  {
+    "sku": "LIB-ATL-110",
+    "title": "Atelier Dual Sconce",
+    "vendor": "Lib&Co",
+    "images": [
+      "https://images.unsplash.com/photo-1616628188505-404edb36ab79?auto=format&fit=crop&w=800&q=80"
+    ],
+    "specs": {
+      "Collection name": "Atelier",
+      "Number of Bulbs": 2,
+      "Finish": "Oxidized Brass",
+      "size": "18\" h",
+      "dimmable": true
+    },
+    "collectionId": "atelier",
+    "price": { "msrp": 599, "dealerNet": 360, "displayCost": 180 },
+    "isNewIntro": true,
+    "isMarketRecommended": true,
+    "active": true
+  },
+  {
+    "sku": "LIB-ATL-118",
+    "title": "Gallery Rail Sconce",
+    "vendor": "Lib&Co",
+    "images": [
+      "https://images.unsplash.com/photo-1524758870432-af57e54afa26?auto=format&fit=crop&w=800&q=80"
+    ],
+    "specs": {
+      "Collection name": "Atelier",
+      "Number of Bulbs": 1,
+      "Finish": "Patina Copper",
+      "size": "12\" h"
+    },
+    "collectionId": "atelier",
+    "price": { "msrp": 449, "dealerNet": 270, "displayCost": 140 },
+    "active": true
+  },
+  {
+    "sku": "HUB-ATL-204",
+    "title": "Forge Articulated Sconce",
+    "vendor": "Hubbardton Forge",
+    "images": [
+      "https://images.unsplash.com/photo-1583257742450-7868f993191e?auto=format&fit=crop&w=800&q=80"
+    ],
+    "specs": {
+      "Collection name": "Atelier",
+      "Number of Bulbs": 1,
+      "Finish": "Blackened Steel",
+      "size": "15\" h"
+    },
+    "collectionId": "atelier",
+    "price": { "msrp": 799, "dealerNet": 480, "displayCost": 240 },
+    "active": true
+  },
+  {
+    "sku": "LIB-VST-401",
+    "title": "Vista Coastal Lantern Large",
+    "vendor": "Lib&Co",
+    "images": [
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80"
+    ],
+    "specs": {
+      "Collection name": "Vista",
+      "Number of Bulbs": 3,
+      "Finish": "Weathered Zinc",
+      "size": "22\" h",
+      "dimmable": true
+    },
+    "collectionId": "vista",
+    "price": { "msrp": 649, "dealerNet": 390, "displayCost": 200 },
+    "isMarketRecommended": true,
+    "active": true
+  },
+  {
+    "sku": "SAV-VST-410",
+    "title": "Savoy Vista Lantern",
+    "vendor": "Savoy House",
+    "images": [
+      "https://images.unsplash.com/photo-1461151304267-38535e780c79?auto=format&fit=crop&w=800&q=80"
+    ],
+    "specs": {
+      "Collection name": "Vista",
+      "Number of Bulbs": 2,
+      "Finish": "Seaside Bronze",
+      "size": "18\" h"
+    },
+    "collectionId": "vista",
+    "price": { "msrp": 499, "dealerNet": 312, "displayCost": 156 },
+    "active": true
+  },
+  {
+    "sku": "LIB-VST-420",
+    "title": "Vista Pathway Bollard",
+    "vendor": "Lib&Co",
+    "images": [
+      "https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&w=800&q=80"
+    ],
+    "specs": {
+      "Collection name": "Vista",
+      "Number of Bulbs": 1,
+      "Finish": "Coastal Slate",
+      "size": "30\" h",
+      "dimmable": false
+    },
+    "collectionId": "vista",
+    "price": { "msrp": 349, "dealerNet": 215, "displayCost": 110 },
+    "isNewIntro": true,
+    "active": true
+  }
+]

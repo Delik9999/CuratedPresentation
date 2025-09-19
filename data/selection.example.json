@@ -1,0 +1,25 @@
+{
+  "id": "demo-selection",
+  "dealerId": "robinson",
+  "name": "Dallas Market Selection",
+  "lines": [
+    {
+      "sku": "LIB-AUR-201",
+      "qty": 2,
+      "notes": "Entry vignette hero",
+      "pickedBy": ["Sierra"],
+      "favorites": ["Sierra"],
+      "collectionId": "aurora"
+    },
+    {
+      "sku": "LIB-ATL-110",
+      "qty": 4,
+      "notes": "Refresh existing display",
+      "pickedBy": ["Jordan"],
+      "favorites": ["Jordan", "Mia"],
+      "collectionId": "atelier"
+    }
+  ],
+  "createdAt": "2024-11-01T12:00:00.000Z",
+  "updatedAt": "2024-11-03T15:35:00.000Z"
+}

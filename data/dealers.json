@@ -1,0 +1,21 @@
+[
+  {
+    "id": "robinson",
+    "name": "Robinson Lighting",
+    "priceTier": "dealer",
+    "displays": [
+      { "sku": "LIB-ATL-110", "installedAt": "Dallas Market 2024" },
+      { "sku": "LIB-VST-401" }
+    ],
+    "previouslyPurchasedSkus": ["LIB-ATL-110", "LIB-VST-401", "SAV-VST-410"],
+    "starterSelectionSkus": ["LIB-AUR-201", "LIB-ATL-110", "LIB-VST-401"]
+  },
+  {
+    "id": "demo",
+    "name": "Demo Dealer",
+    "priceTier": "msrpOnly",
+    "displays": [],
+    "previouslyPurchasedSkus": ["SAV-AUR-305"],
+    "starterSelectionSkus": ["SAV-AUR-305", "LIB-VST-420"]
+  }
+]

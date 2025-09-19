@@ -1,0 +1,23 @@
+[
+  {
+    "id": "aurora",
+    "name": "Aurora Statement Pendants",
+    "heroVideoUrl": "https://cdn.coverr.co/videos/coverr-glowing-light-bulbs-1306117929/1080p.mp4",
+    "description": "Soft, sculptural pendants inspired by evening market vignettes.",
+    "sortOrder": 1
+  },
+  {
+    "id": "atelier",
+    "name": "Atelier Mixed-Media Sconces",
+    "heroVideoUrl": "https://cdn.coverr.co/videos/coverr-floating-through-the-city-4632/1080p.mp4",
+    "description": "Hand-applied finishes and artisan glass for boutique displays.",
+    "sortOrder": 2
+  },
+  {
+    "id": "vista",
+    "name": "Vista Outdoor Revival",
+    "heroVideoUrl": "https://cdn.coverr.co/videos/coverr-hanging-lightbulbs-4589/1080p.mp4",
+    "description": "Coastal-inspired outdoor lighting with resilient finishes.",
+    "sortOrder": 3
+  }
+]
