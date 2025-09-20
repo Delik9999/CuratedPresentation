@@ -32,12 +32,16 @@ The development server starts at [http://localhost:3000](http://localhost:3000).
 
 Sample datasets live under `/data`:
 
-- `products.json`
+- `libspecs.json` – primary product spec source (SKU, description, pricing, flags)
+- `libcoststockYYYYMMDD.json` – latest cost/stock snapshot (the loader grabs the alphabetically last file)
+- `products.json` – generated fallback derived from `libspecs.json`
 - `collections.json`
 - `dealers.json`
 - `selection.example.json`
 
-These are read directly when Supabase is not configured. Updates to a selection will overwrite `selection.example.json` in the local environment.
+When Supabase is not configured, the data client first attempts to transform `libspecs.json` (+ the most recent `libcoststock*.json`) into the internal product model. If those files are absent it falls back to `products.json`. Updates to a selection will overwrite `selection.example.json` locally.
+
+Product imagery resolves to `https://libandco.com/cdn/shop/files/<SKU>.jpg?v=1734408335`, so any SKU present in `libspecs.json` will display automatically using that URL pattern.
 
 ## Supabase (optional)
 
