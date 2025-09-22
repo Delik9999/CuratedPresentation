@@ -1,0 +1,25 @@
+{
+  "id": "demo-selection",
+  "dealerId": "robinson",
+  "name": "Dallas Market Selection",
+  "lines": [
+    {
+      "sku": "12083-03",
+      "qty": 2,
+      "notes": "Entry vignette hero",
+      "pickedBy": ["Sierra"],
+      "favorites": ["Sierra"],
+      "collectionId": "bowen"
+    },
+    {
+      "sku": "13107-02",
+      "qty": 1,
+      "notes": "Storytelling rail for design desk",
+      "pickedBy": ["Jordan"],
+      "favorites": ["Jordan", "Mia"],
+      "collectionId": "mercer"
+    }
+  ],
+  "createdAt": "2025-01-15T12:00:00.000Z",
+  "updatedAt": "2025-01-22T15:35:00.000Z"
+}
