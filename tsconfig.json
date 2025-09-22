@@ -13,13 +13,14 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "types": ["node"],
+    "types": ["node", "next"],
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "src",
     "paths": {
       "@/*": ["*"]
-    }
+    },
+    "plugins": [{ "name": "next" }]
   },
-  "include": ["next-env.d.ts", "src/**/*", "next.config.mjs"],
+  "include": ["next-env.d.ts", "src/**/*", "next.config.mjs", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
