@@ -11,7 +11,7 @@
       "Category": "Pendant",
       "Number of Bulbs": "6 x E12 60W",
       "Finish": "Vintage Brass",
-      "size": "36\" W × 14\" H",
+      "size": "36\" W \u00d7 14\" H",
       "dimmable": true
     },
     "collectionId": "bowen",
@@ -23,7 +23,13 @@
     },
     "isNewIntro": true,
     "isMarketRecommended": true,
-    "active": true
+    "active": true,
+    "availability": {
+      "status": "in_stock",
+      "available": 22,
+      "displayEligible": true,
+      "asOf": "2025-01-26"
+    }
   },
   {
     "sku": "12084-01",
@@ -37,7 +43,7 @@
       "Category": "Pendant",
       "Number of Bulbs": "5 x E12 40W",
       "Finish": "Brushed Champagne",
-      "size": "24\" W × 22\" H",
+      "size": "24\" W \u00d7 22\" H",
       "dimmable": true
     },
     "collectionId": "bowen",
@@ -49,7 +55,13 @@
     },
     "isNewIntro": true,
     "isMarketRecommended": true,
-    "active": true
+    "active": true,
+    "availability": {
+      "status": "in_stock",
+      "available": 18,
+      "displayEligible": true,
+      "asOf": "2025-01-26"
+    }
   },
   {
     "sku": "12086-02",
@@ -63,7 +75,7 @@
       "Category": "Sconce",
       "Number of Bulbs": "2 x G9 LED",
       "Finish": "Soft Matte Black",
-      "size": "7\" W × 16\" H",
+      "size": "7\" W \u00d7 16\" H",
       "dimmable": true
     },
     "collectionId": "bowen",
@@ -75,7 +87,13 @@
     },
     "isNewIntro": true,
     "isMarketRecommended": false,
-    "active": true
+    "active": true,
+    "availability": {
+      "status": "in_stock",
+      "available": 30,
+      "displayEligible": true,
+      "asOf": "2025-01-26"
+    }
   },
   {
     "sku": "13105-04",
@@ -89,7 +107,7 @@
       "Category": "Chandelier",
       "Number of Bulbs": "8 x E26 75W",
       "Finish": "Polished Nickel",
-      "size": "32\" W × 27\" H",
+      "size": "32\" W \u00d7 27\" H",
       "dimmable": true
     },
     "collectionId": "mercer",
@@ -101,7 +119,13 @@
     },
     "isNewIntro": false,
     "isMarketRecommended": true,
-    "active": true
+    "active": true,
+    "availability": {
+      "status": "limited",
+      "available": 9,
+      "displayEligible": true,
+      "asOf": "2025-01-26"
+    }
   },
   {
     "sku": "13107-02",
@@ -115,7 +139,7 @@
       "Category": "Linear Pendant",
       "Number of Bulbs": "6 x Integrated LED",
       "Finish": "Antique Bronze",
-      "size": "48\" W × 12\" H",
+      "size": "48\" W \u00d7 12\" H",
       "dimmable": true
     },
     "collectionId": "mercer",
@@ -127,7 +151,13 @@
     },
     "isNewIntro": false,
     "isMarketRecommended": true,
-    "active": true
+    "active": true,
+    "availability": {
+      "status": "limited",
+      "available": 7,
+      "displayEligible": true,
+      "asOf": "2025-01-26"
+    }
   },
   {
     "sku": "13108-01",
@@ -141,7 +171,7 @@
       "Category": "Picture Light",
       "Number of Bulbs": "Integrated LED",
       "Finish": "Aged Brass",
-      "size": "30\" W × 4\" H",
+      "size": "30\" W \u00d7 4\" H",
       "dimmable": true
     },
     "collectionId": "mercer",
@@ -153,7 +183,13 @@
     },
     "isNewIntro": false,
     "isMarketRecommended": false,
-    "active": true
+    "active": true,
+    "availability": {
+      "status": "in_stock",
+      "available": 14,
+      "displayEligible": true,
+      "asOf": "2025-01-26"
+    }
   },
   {
     "sku": "14110-01",
@@ -167,7 +203,7 @@
       "Category": "Outdoor Lantern",
       "Number of Bulbs": "3 x E12 40W",
       "Finish": "Weathered Zinc",
-      "size": "12\" W × 25\" H",
+      "size": "12\" W \u00d7 25\" H",
       "dimmable": true
     },
     "collectionId": "harborline",
@@ -179,7 +215,13 @@
     },
     "isNewIntro": false,
     "isMarketRecommended": true,
-    "active": true
+    "active": true,
+    "availability": {
+      "status": "in_stock",
+      "available": 12,
+      "displayEligible": true,
+      "asOf": "2025-01-26"
+    }
   },
   {
     "sku": "14112-02",
@@ -193,7 +235,7 @@
       "Category": "Outdoor Sconce",
       "Number of Bulbs": "2 x E12 LED",
       "Finish": "Coastal Graphite",
-      "size": "7\" W × 18\" H",
+      "size": "7\" W \u00d7 18\" H",
       "dimmable": true
     },
     "collectionId": "harborline",
@@ -205,7 +247,13 @@
     },
     "isNewIntro": false,
     "isMarketRecommended": false,
-    "active": true
+    "active": true,
+    "availability": {
+      "status": "in_stock",
+      "available": 20,
+      "displayEligible": true,
+      "asOf": "2025-01-26"
+    }
   },
   {
     "sku": "14114-03",
@@ -219,7 +267,7 @@
       "Category": "Ceiling",
       "Number of Bulbs": "2 x E26 60W",
       "Finish": "Salted Bronze",
-      "size": "14\" W × 7\" H",
+      "size": "14\" W \u00d7 7\" H",
       "dimmable": true
     },
     "collectionId": "harborline",
@@ -231,7 +279,13 @@
     },
     "isNewIntro": false,
     "isMarketRecommended": false,
-    "active": true
+    "active": true,
+    "availability": {
+      "status": "in_stock",
+      "available": 26,
+      "displayEligible": true,
+      "asOf": "2025-01-26"
+    }
   },
   {
     "sku": "15021-01",
@@ -245,7 +299,7 @@
       "Category": "Linear Pendant",
       "Number of Bulbs": "Integrated LED",
       "Finish": "Matte Pearl",
-      "size": "54\" W × 10\" H",
+      "size": "54\" W \u00d7 10\" H",
       "dimmable": true
     },
     "collectionId": "liminal",
@@ -257,7 +311,13 @@
     },
     "isNewIntro": true,
     "isMarketRecommended": true,
-    "active": true
+    "active": true,
+    "availability": {
+      "status": "limited",
+      "available": 5,
+      "displayEligible": true,
+      "asOf": "2025-01-26"
+    }
   },
   {
     "sku": "15022-02",
@@ -271,7 +331,7 @@
       "Category": "Pendant",
       "Number of Bulbs": "Integrated LED",
       "Finish": "Graphite",
-      "size": "18\" W × 26\" H",
+      "size": "18\" W \u00d7 26\" H",
       "dimmable": true
     },
     "collectionId": "liminal",
@@ -283,7 +343,13 @@
     },
     "isNewIntro": true,
     "isMarketRecommended": false,
-    "active": true
+    "active": true,
+    "availability": {
+      "status": "in_stock",
+      "available": 16,
+      "displayEligible": true,
+      "asOf": "2025-01-26"
+    }
   },
   {
     "sku": "15024-01",
@@ -297,7 +363,7 @@
       "Category": "Portable",
       "Number of Bulbs": "Integrated LED",
       "Finish": "Soft Graphite",
-      "size": "9\" W × 16\" H",
+      "size": "9\" W \u00d7 16\" H",
       "dimmable": true
     },
     "collectionId": "liminal",
@@ -309,6 +375,12 @@
     },
     "isNewIntro": true,
     "isMarketRecommended": false,
-    "active": true
+    "active": true,
+    "availability": {
+      "status": "in_stock",
+      "available": 34,
+      "displayEligible": true,
+      "asOf": "2025-01-26"
+    }
   }
 ]

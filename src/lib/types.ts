@@ -5,6 +5,13 @@ export type PriceTiers = {
   displayCost?: number;
 };
 
+export type ProductAvailability = {
+  status: 'in_stock' | 'limited' | 'backorder' | 'unknown';
+  available?: number;
+  displayEligible?: boolean;
+  asOf?: string;
+};
+
 export type Product = {
   sku: string;
   title: string;
@@ -23,6 +30,7 @@ export type Product = {
   price: PriceTiers;
   isNewIntro?: boolean;
   isMarketRecommended?: boolean;
+  availability?: ProductAvailability;
   active: boolean;
 };
 

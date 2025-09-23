@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { useAttributionName } from '@/hooks/useAttribution';
 import { useSelectionStore } from '@/hooks/useSelectionStore';
+import { describeAvailability } from '@/lib/availability';
 import type { Product } from '@/lib/types';
 import { AttributionPrompt } from './AttributionPrompt';
 import { ExportMenu } from './ExportMenu';
@@ -177,6 +178,7 @@ export function SelectionPanel({ products, readOnly = false }: SelectionPanelPro
             lines.map((line) => {
               const product = skuMap.get(line.sku);
               const collectionLabel = product?.specs['Collection name'] ?? product?.collectionId ?? 'Collection';
+              const availabilityInfo = describeAvailability(product?.availability);
               return (
                 <div
                   key={line.sku}
@@ -191,6 +193,14 @@ export function SelectionPanel({ products, readOnly = false }: SelectionPanelPro
                         {product?.title ?? line.sku}
                       </h3>
                       <p className="text-xs text-slate-500">SKU {line.sku}</p>
+                      {availabilityInfo && (
+                        <p className={clsx('text-xs font-semibold', availabilityInfo.toneClass)}>
+                          {availabilityInfo.label}
+                        </p>
+                      )}
+                      {availabilityInfo?.asOfLabel && (
+                        <p className="text-[11px] text-slate-400">{availabilityInfo.asOfLabel}</p>
+                      )}
                     </div>
                     {!readOnly && (
                       <button

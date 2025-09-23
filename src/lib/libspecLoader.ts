@@ -86,18 +86,35 @@ function ensureImageUrl(rawUrl: string, version?: string): string {
   return version ? `${url}?v=${version}` : url;
 }
 
-async function loadLatestStockMap(): Promise<Map<string, LookupMap>> {
+const STOCK_FILE_PATTERN = /^libcoststock[-\d]+\.json$/i;
+
+function stockSortKey(file: string): string {
+  const digits = file.replace(/\D/g, '');
+  if (digits.length >= 8) {
+    return digits.slice(0, 8);
+  }
+  return digits || file;
+}
+
+type StockSnapshot = {
+  map: Map<string, LookupMap>;
+  asOf?: string;
+};
+
+async function loadLatestStockSnapshot(): Promise<StockSnapshot> {
   try {
     const entries = await readdir(DATA_DIR);
     const stockFiles = entries
-      .filter((file) => /^libcoststock\d+\.json$/i.test(file))
-      .sort();
+      .filter((file) => STOCK_FILE_PATTERN.test(file))
+      .map((file) => ({ file, key: stockSortKey(file) }))
+      .sort((a, b) => a.key.localeCompare(b.key));
     if (stockFiles.length === 0) {
-      return new Map();
+      return { map: new Map() };
     }
-    const latestFile = stockFiles[stockFiles.length - 1];
+    const latestFile = stockFiles[stockFiles.length - 1].file;
     const raw = await readFile(join(DATA_DIR, latestFile), 'utf-8');
     const json = JSON.parse(raw) as JsonRecord;
+    const asOf = toStringValue((json as { asOf?: unknown }).asOf);
     const collection = Array.isArray(json)
       ? json
       : Array.isArray(json.items)
@@ -113,10 +130,10 @@ async function loadLatestStockMap(): Promise<Map<string, LookupMap>> {
       if (!sku) continue;
       map.set(sku.toUpperCase(), lookup);
     }
-    return map;
+    return { map, asOf };
   } catch (error) {
     console.warn('Unable to read libcoststock snapshot', error);
-    return new Map();
+    return { map: new Map() };
   }
 }
 
@@ -134,7 +151,7 @@ export async function loadLibSpecProducts(): Promise<Product[] | null> {
       return null;
     }
 
-    const stockMap = await loadLatestStockMap();
+    const { map: stockMap, asOf: stockAsOf } = await loadLatestStockSnapshot();
     const products: Product[] = [];
 
     for (const record of records) {
@@ -183,6 +200,9 @@ export async function loadLibSpecProducts(): Promise<Product[] | null> {
       const available = stockLookup
         ? toNumberValue(getValue<number | string>(stockLookup, ['available', 'qty', 'quantity', 'onhand', 'stock']))
         : undefined;
+      const displayEligible = stockLookup
+        ? toBooleanValue(getValue(stockLookup, ['displayeligible', 'displayeligibleflag', 'display']))
+        : undefined;
       if (stockLookup) {
         dealerNet = dealerNet ?? toNumberValue(getValue(stockLookup, ['dealernet', 'netprice', 'wholesale']));
         msrp = msrp ?? toNumberValue(getValue(stockLookup, ['msrp']));
@@ -224,6 +244,42 @@ export async function loadLibSpecProducts(): Promise<Product[] | null> {
 
       if (video) {
         product.videoUrls = [video];
+      }
+
+      if (stockLookup) {
+        let status: Product['availability']['status'] = 'unknown';
+        if (available !== undefined) {
+          if (available <= 0) {
+            status = 'backorder';
+          } else if (available <= 10) {
+            status = 'limited';
+          } else {
+            status = 'in_stock';
+          }
+        }
+
+        product.availability = {
+          status,
+          available: available ?? undefined,
+          displayEligible: displayEligible ?? undefined,
+          asOf: stockAsOf,
+        };
+
+        if (product.availability.available === undefined) {
+          delete product.availability.available;
+        }
+
+        if (product.availability.displayEligible === undefined) {
+          delete product.availability.displayEligible;
+        }
+
+        if (!product.availability.asOf) {
+          delete product.availability.asOf;
+        }
+
+        if (product.availability.status === 'unknown' && Object.keys(product.availability).length === 1) {
+          delete product.availability;
+        }
       }
 
       products.push(product);

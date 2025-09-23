@@ -6,6 +6,7 @@ import { createPortal } from 'react-dom';
 import clsx from 'clsx';
 import { useAttributionName } from '@/hooks/useAttribution';
 import { useSelectionStore } from '@/hooks/useSelectionStore';
+import { describeAvailability } from '@/lib/availability';
 import type { DealerProfile, Product } from '@/lib/types';
 import { AttributionPrompt } from './AttributionPrompt';
 
@@ -38,6 +39,7 @@ export function SkuCard({
   const isAdded = Boolean(existingLine);
   const isFavorited = existingLine?.favorites.includes(name ?? '') ?? false;
   const displayBadge = dealer?.displays.some((item) => item.sku === product.sku);
+  const availabilityInfo = describeAvailability(product.availability);
 
   const modalTitleId = useMemo(
     () => `product-${product.sku.replace(/[^a-zA-Z0-9]/g, '')}-title`,
@@ -168,8 +170,13 @@ export function SkuCard({
             ) : (
               <p className="text-sm text-slate-500">{product.vendor}</p>
             )}
+            {availabilityInfo && variant !== 'recommendation' && (
+              <p className={clsx('text-xs font-semibold', availabilityInfo.toneClass)}>
+                {availabilityInfo.label}
+              </p>
+            )}
           </div>
-          <div className="text-right text-sm font-semibold text-slate-900">
+          <div className="flex flex-col items-end text-right text-sm font-semibold text-slate-900">
             {variant === 'recommendation' ? (
               <div className="flex flex-col items-end text-xs text-slate-500">
                 <span className="text-[11px] uppercase tracking-widest text-slate-400">{primaryPriceLabel}</span>
@@ -178,6 +185,14 @@ export function SkuCard({
               </div>
             ) : (
               <span className="text-sm font-semibold text-slate-900">{primaryPriceDisplay}</span>
+            )}
+            {availabilityInfo && (
+              <span className={clsx('text-xs font-semibold', availabilityInfo.toneClass)}>
+                {availabilityInfo.label}
+              </span>
+            )}
+            {availabilityInfo?.asOfLabel && (
+              <span className="text-[11px] text-slate-400">{availabilityInfo.asOfLabel}</span>
             )}
           </div>
         </div>
@@ -213,6 +228,14 @@ export function SkuCard({
               {hasDealerWholesale && <PriceTile label="MSRP" value={msrpLabel} />}
               {product.price.map && (
                 <PriceTile label="MAP" value={`$${product.price.map.toLocaleString()}`} />
+              )}
+              {availabilityInfo && (
+                <PriceTile
+                  label="Availability"
+                  value={availabilityInfo.label}
+                  toneClass={availabilityInfo.toneClass}
+                  description={availabilityInfo.asOfLabel}
+                />
               )}
             </div>
 
@@ -313,13 +336,16 @@ function Badge({ children, variant = 'brand' }: BadgeProps) {
 type PriceTileProps = {
   label: string;
   value: string;
+  toneClass?: string;
+  description?: string;
 };
 
-function PriceTile({ label, value }: PriceTileProps) {
+function PriceTile({ label, value, toneClass, description }: PriceTileProps) {
   return (
     <div className="rounded-2xl bg-slate-100 p-4">
       <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">{label}</p>
-      <p className="mt-1 text-base font-semibold text-slate-900">{value}</p>
+      <p className={clsx('mt-1 text-base font-semibold text-slate-900', toneClass)}>{value}</p>
+      {description && <p className="mt-1 text-xs text-slate-500">{description}</p>}
     </div>
   );
 }
