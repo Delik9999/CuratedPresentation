@@ -1,17 +1,23 @@
 {
   "asOf": "2025-01-26",
-  "items": [
-    { "sku": "12121-02", "available": 8, "displayEligible": true },
-    { "sku": "12121-04", "available": 14, "displayEligible": true },
-    { "sku": "12122-01", "available": 27, "displayEligible": true },
-    { "sku": "13090-01", "available": 6, "displayEligible": true },
-    { "sku": "13091-03", "available": 18, "displayEligible": true },
-    { "sku": "13092-02", "available": 11, "displayEligible": true },
-    { "sku": "14120-01", "available": 22, "displayEligible": true },
-    { "sku": "14121-02", "available": 19, "displayEligible": true },
-    { "sku": "14122-01", "available": 31, "displayEligible": true },
-    { "sku": "15030-01", "available": 5, "displayEligible": true },
-    { "sku": "15031-02", "available": 16, "displayEligible": true },
-    { "sku": "15032-01", "available": 34, "displayEligible": true }
+  "inventory": [
+    { "sku": "10121-05", "available": 6, "displayEligible": true },
+    { "sku": "10121-06", "available": 4, "displayEligible": true },
+    { "sku": "10122-05", "available": 9, "displayEligible": true },
+    { "sku": "10122-06", "available": 12, "displayEligible": false },
+    { "sku": "10123-05", "available": 15, "displayEligible": true },
+    { "sku": "10123-06", "available": 3, "displayEligible": true },
+    { "sku": "10124-05", "available": 2, "displayEligible": true },
+    { "sku": "10124-06", "available": 0, "displayEligible": false },
+    { "sku": "10125-05", "available": 11, "displayEligible": true },
+    { "sku": "10125-06", "available": 8, "displayEligible": true },
+    { "sku": "10126-05", "available": 14, "displayEligible": true },
+    { "sku": "10126-06", "available": 5, "displayEligible": true },
+    { "sku": "10127-05", "available": 7, "displayEligible": true },
+    { "sku": "10127-06", "available": 1, "displayEligible": false },
+    { "sku": "10128-05", "available": 3, "displayEligible": true },
+    { "sku": "10128-06", "available": 10, "displayEligible": true },
+    { "sku": "10129-05", "available": 2, "displayEligible": true },
+    { "sku": "10129-06", "available": -1, "displayEligible": false }
   ]
 }

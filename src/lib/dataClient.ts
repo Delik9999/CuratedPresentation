@@ -20,30 +20,30 @@ type CollectionMeta = {
 };
 
 const COLLECTION_OVERRIDES: Record<string, CollectionMeta> = {
-  alta: {
-    heroVideoUrl: 'https://libandco.com/cdn/showroom/video/alta-loop.mp4',
-    description: 'Architectural LED statements shown at Dallas Market with tunable white control.',
-    sortOrder: 1,
-  },
-  maris: {
-    heroVideoUrl: 'https://libandco.com/cdn/showroom/video/maris-loop.mp4',
-    description: 'Layered linens and sculpted rails curated for gallery storytelling moments.',
-    sortOrder: 2,
-  },
-  northlake: {
-    heroVideoUrl: 'https://libandco.com/cdn/showroom/video/northlake-loop.mp4',
-    description: 'Coastal-ready outdoor pieces designed for salt air resilience and warm glow.',
-    sortOrder: 3,
-  },
-  liminal: {
-    heroVideoUrl: 'https://libandco.com/cdn/showroom/video/liminal-loop.mp4',
-    description: 'Studio-driven modern lighting with rechargeable and tunable LED technology.',
-    sortOrder: 4,
-  },
   calcolo: {
     heroVideoUrl: 'https://libandco.com/cdn/showroom/video/calcolo-loop.mp4',
     description: 'Precision balanced forms with carved alabaster diffusers—heroed for Dallas Market.',
     sortOrder: 0,
+  },
+  vinci: {
+    heroVideoUrl: 'https://libandco.com/cdn/showroom/video/vinci-loop.mp4',
+    description: 'Versatile LED wall luminaires tuned for spa and hospitality refreshes.',
+    sortOrder: 1,
+  },
+  ancona: {
+    heroVideoUrl: 'https://libandco.com/cdn/showroom/video/ancona-loop.mp4',
+    description: 'Italian-influenced ceiling accents pairing opal glass with metallic finishes.',
+    sortOrder: 2,
+  },
+  dolo: {
+    heroVideoUrl: 'https://libandco.com/cdn/showroom/video/dolo-loop.mp4',
+    description: 'Slimline LED bath bars delivering tunable white for luxury projects.',
+    sortOrder: 3,
+  },
+  trapani: {
+    heroVideoUrl: 'https://libandco.com/cdn/showroom/video/trapani-loop.mp4',
+    description: 'Grand statement chandeliers in Soft Brass and Metallic Black for dramatic entries.',
+    sortOrder: 4,
   },
 };
 

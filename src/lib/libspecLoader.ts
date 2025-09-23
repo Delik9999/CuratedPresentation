@@ -135,9 +135,24 @@ export async function loadLibSpecProducts(): Promise<Product[] | null> {
 
   try {
     const raw = await readFile(specPath, 'utf-8');
-    const records = JSON.parse(raw);
-    if (!Array.isArray(records)) {
-      console.warn('libspecs.json must contain an array of records.');
+    const parsed = JSON.parse(raw);
+    const records: JsonRecord[] = Array.isArray(parsed)
+      ? parsed
+      : parsed && typeof parsed === 'object'
+        ? Object.entries(parsed)
+            .map(([skuKey, value]) => {
+              if (!value || typeof value !== 'object') return null;
+              const entry = { ...(value as JsonRecord) };
+              if (!entry.sku && skuKey) {
+                entry.sku = skuKey;
+              }
+              return entry;
+            })
+            .filter((entry): entry is JsonRecord => Boolean(entry))
+        : [];
+
+    if (records.length === 0) {
+      console.warn('libspecs.json did not contain any records.');
       return null;
     }
 
@@ -153,7 +168,9 @@ export async function loadLibSpecProducts(): Promise<Product[] | null> {
       if (!sku) continue;
 
       const title =
-        toStringValue(getValue<string>(lookup, ['name', 'title', 'productname', 'description'])) ?? sku;
+        toStringValue(
+          getValue<string>(lookup, ['name', 'title', 'productname', 'productdescription', 'description'])
+        ) ?? sku;
       const vendor =
         toStringValue(getValue<string>(lookup, ['vendor', 'brand', 'manufacturer'])) ?? 'Lib&Co';
       const collectionName = toStringValue(
@@ -176,9 +193,15 @@ export async function loadLibSpecProducts(): Promise<Product[] | null> {
       const rawImage = toStringValue(getValue<string>(lookup, ['image', 'imageurl', 'primaryimage'])) ?? sku;
       const imageUrl = ensureImageUrl(rawImage, imageVersion);
 
-      let msrp = toNumberValue(getValue<number | string>(lookup, ['msrp', 'msrpprice']));
-      let dealerNet = toNumberValue(getValue<number | string>(lookup, ['dealernet', 'netprice', 'wholesale']));
-      let map = toNumberValue(getValue<number | string>(lookup, ['map', 'minimumadvertisedprice']));
+      let msrp = toNumberValue(
+        getValue<number | string>(lookup, ['msrp', 'msrpprice', 'cadmsrp', 'usdmsrp'])
+      );
+      let dealerNet = toNumberValue(
+        getValue<number | string>(lookup, ['dealernet', 'netprice', 'wholesale', 'cadwsp', 'usdwholesale'])
+      );
+      let map = toNumberValue(
+        getValue<number | string>(lookup, ['map', 'minimumadvertisedprice', 'cadmap', 'usdmap'])
+      );
       let displayCost = toNumberValue(getValue<number | string>(lookup, ['displaycost', 'displayprice']));
       const newIntro = toBooleanValue(getValue(lookup, ['isnewintro', 'newintro', 'new']));
       const marketRecommended = toBooleanValue(
@@ -204,10 +227,26 @@ export async function loadLibSpecProducts(): Promise<Product[] | null> {
       if (category) specs.Category = category;
       if (bulbs) specs['Number of Bulbs'] = bulbs;
       if (finish) specs.Finish = finish;
-      const size = buildSize(width, height, depth);
-      if (size) specs.size = size;
+      const productDimension = toStringValue(
+        getValue<string>(lookup, ['productdimension', 'dimensions', 'overallsize'])
+      );
+      const size = productDimension ?? buildSize(width, height, depth);
+      if (size) {
+        specs.size = size;
+        if (productDimension) {
+          specs['Product Dimension'] = productDimension;
+        }
+      }
       if (dimmable !== undefined) specs.dimmable = dimmable;
       if (description) specs.Story = description;
+      const bulbType = toStringValue(getValue<string>(lookup, ['bulbtype', 'lamptype']));
+      if (bulbType) specs['Bulb Type'] = bulbType;
+      const location = toStringValue(
+        getValue<string>(lookup, ['mountinglocationrating', 'locationrating', 'mountinglocation'])
+      );
+      if (location) specs['Mounting Location'] = location;
+      const weight = toStringValue(getValue<string>(lookup, ['productweight', 'weight']));
+      if (weight) specs['Product Weight'] = weight;
 
       const collectionId = slugify(collectionName ?? 'general');
 

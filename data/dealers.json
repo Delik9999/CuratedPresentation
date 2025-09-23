@@ -4,20 +4,20 @@
     "name": "Robinson Lighting",
     "priceTier": "dealer",
     "displays": [
-      { "sku": "13090-01", "installedAt": "Dallas Market 2025" },
-      { "sku": "14120-01", "installedAt": "Showroom Entry" }
+      { "sku": "10128-05", "installedAt": "Dallas Market 2025" },
+      { "sku": "10124-05", "installedAt": "Entry Vignette" }
     ],
-    "previouslyPurchasedSkus": ["13091-03", "14120-01", "14121-02"],
-    "starterSelectionSkus": ["12121-02", "13090-01", "15030-01", "14120-01"]
+    "previouslyPurchasedSkus": ["10124-05", "10125-05", "10126-05"],
+    "starterSelectionSkus": ["10121-05", "10124-05", "10126-05", "10128-05"]
   },
   {
     "id": "demo",
     "name": "Demo Dealer",
     "priceTier": "msrpOnly",
     "displays": [
-      { "sku": "14122-01" }
+      { "sku": "10127-05" }
     ],
-    "previouslyPurchasedSkus": ["14122-01", "15031-02"],
-    "starterSelectionSkus": ["15031-02", "12121-04", "14122-01"]
+    "previouslyPurchasedSkus": ["10125-06", "10127-05"],
+    "starterSelectionSkus": ["10123-05", "10127-05", "10128-06"]
   }
 ]
