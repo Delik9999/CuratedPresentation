@@ -32,7 +32,8 @@ export function RecommendationRow({
             product={product}
             dealer={dealer}
             isPreviouslyPurchased={previouslyPurchased.includes(product.sku)}
-            variant="recommendation"
+            variant="thumb"
+            tileShape="landscape"
           />
         ))}
       </div>

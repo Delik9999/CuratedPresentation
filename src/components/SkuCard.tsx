@@ -14,14 +14,16 @@ export type SkuCardProps = {
   product: Product;
   dealer?: DealerProfile | null;
   isPreviouslyPurchased?: boolean;
-  variant?: 'gallery' | 'recommendation';
+  variant?: 'thumb' | 'detail';
+  tileShape?: 'square' | 'landscape';
 };
 
 export function SkuCard({
   product,
   dealer,
   isPreviouslyPurchased,
-  variant = 'gallery',
+  variant = 'thumb',
+  tileShape = 'square',
 }: SkuCardProps) {
   const selection = useSelectionStore((state) => state.selection);
   const addLine = useSelectionStore((state) => state.addLine);
@@ -127,17 +129,27 @@ export function SkuCard({
     handleFavorite(name!);
   };
 
-  const cardClasses = clsx(
-    'group relative flex w-full flex-col gap-3 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60',
-    variant === 'gallery'
-      ? 'rounded-3xl bg-white/80 p-4 shadow-sm ring-1 ring-slate-200 hover:-translate-y-1 hover:shadow-lg'
-      : 'rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:-translate-y-0.5 hover:shadow-md'
-  );
+  const isThumb = variant === 'thumb';
 
-  const imageWrapperClasses = clsx(
-    'relative overflow-hidden rounded-2xl bg-slate-100',
-    variant === 'gallery' ? 'aspect-square' : 'aspect-[4/3]'
-  );
+  const fallbackSrc = `https://libandco.com/cdn/shop/files/${product.sku}.jpg`;
+  const imgSrc = product.images?.[0] ?? fallbackSrc;
+
+  const cardClasses = isThumb
+    ? clsx(
+        'group relative w-full overflow-hidden rounded-2xl text-left shadow-sm ring-1 ring-slate-200 transition',
+        'hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60'
+      )
+    : clsx(
+        'group relative flex w-full flex-col gap-3 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60',
+        'rounded-3xl bg-white/80 p-4 shadow-sm ring-1 ring-slate-200 hover:-translate-y-1 hover:shadow-lg'
+      );
+
+  const imageWrapperClasses = isThumb
+    ? clsx(
+        'relative bg-slate-100',
+        tileShape === 'landscape' ? 'aspect-[4/3]' : 'aspect-square'
+      )
+    : 'relative overflow-hidden rounded-2xl bg-slate-100 aspect-square';
 
   return (
     <>
@@ -148,54 +160,48 @@ export function SkuCard({
       >
         <div className={imageWrapperClasses}>
           <Image
-            src={product.images[0]}
+            src={imgSrc}
             alt={`${product.title}`}
             fill
             className="object-cover transition duration-300 group-hover:scale-105"
             sizes="(max-width: 768px) 90vw, 320px"
           />
-          {isAdded && (
-            <span className="absolute left-3 top-3 rounded-full bg-brand text-xs font-semibold uppercase tracking-wide text-white shadow">
-              &nbsp;✓ Added&nbsp;
-            </span>
+          {isThumb ? (
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent px-3 pb-2 pt-8">
+              <h3 className="text-sm font-semibold text-white line-clamp-2">{product.title}</h3>
+            </div>
+          ) : (
+            isAdded && (
+              <span className="absolute left-3 top-3 rounded-full bg-brand text-xs font-semibold uppercase tracking-wide text-white shadow">
+                &nbsp;✓ Added&nbsp;
+              </span>
+            )
           )}
         </div>
-        <div className="flex items-start justify-between gap-3">
-          <div className="space-y-1">
-            <h3 className="text-base font-semibold text-slate-900">{product.title}</h3>
-            {variant === 'recommendation' ? (
-              <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
-                Dallas Market Highlight
-              </p>
-            ) : (
+        {!isThumb && (
+          <div className="flex items-start justify-between gap-3">
+            <div className="space-y-1">
+              <h3 className="text-base font-semibold text-slate-900">{product.title}</h3>
               <p className="text-sm text-slate-500">{product.vendor}</p>
-            )}
-            {availabilityInfo && variant !== 'recommendation' && (
-              <p className={clsx('text-xs font-semibold', availabilityInfo.toneClass)}>
-                {availabilityInfo.label}
-              </p>
-            )}
-          </div>
-          <div className="flex flex-col items-end text-right text-sm font-semibold text-slate-900">
-            {variant === 'recommendation' ? (
-              <div className="flex flex-col items-end text-xs text-slate-500">
-                <span className="text-[11px] uppercase tracking-widest text-slate-400">{primaryPriceLabel}</span>
-                <span className="text-sm font-semibold text-slate-900">{primaryPriceDisplay}</span>
-                {displayCostLabel && <span>Display {displayCostLabel}</span>}
-              </div>
-            ) : (
+              {availabilityInfo && (
+                <p className={clsx('text-xs font-semibold', availabilityInfo.toneClass)}>
+                  {availabilityInfo.label}
+                </p>
+              )}
+            </div>
+            <div className="flex flex-col items-end text-right text-sm font-semibold text-slate-900">
               <span className="text-sm font-semibold text-slate-900">{primaryPriceDisplay}</span>
-            )}
-            {availabilityInfo && (
-              <span className={clsx('text-xs font-semibold', availabilityInfo.toneClass)}>
-                {availabilityInfo.label}
-              </span>
-            )}
-            {availabilityInfo?.asOfLabel && (
-              <span className="text-[11px] text-slate-400">{availabilityInfo.asOfLabel}</span>
-            )}
+              {availabilityInfo && (
+                <span className={clsx('text-xs font-semibold', availabilityInfo.toneClass)}>
+                  {availabilityInfo.label}
+                </span>
+              )}
+              {availabilityInfo?.asOfLabel && (
+                <span className="text-[11px] text-slate-400">{availabilityInfo.asOfLabel}</span>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </button>
 
       <ProductOverlay
@@ -206,7 +212,7 @@ export function SkuCard({
         <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
           <div className="relative aspect-square overflow-hidden rounded-3xl bg-slate-100 md:aspect-[4/5]">
             <Image
-              src={product.images[0]}
+              src={imgSrc}
               alt={`${product.title}`}
               fill
               className="object-cover"

@@ -50,6 +50,7 @@ export function CollectionSection({
               product={product}
               dealer={dealer}
               isPreviouslyPurchased={previouslyPurchased.includes(product.sku)}
+              variant="thumb"
             />
           </Suspense>
         ))}
