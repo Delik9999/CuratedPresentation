@@ -247,7 +247,7 @@ export async function loadLibSpecProducts(): Promise<Product[] | null> {
       }
 
       if (stockLookup) {
-        let status: Product['availability']['status'] = 'unknown';
+        let status: NonNullable<Product['availability']>['status'] = 'unknown';
         if (available !== undefined) {
           if (available <= 0) {
             status = 'backorder';
