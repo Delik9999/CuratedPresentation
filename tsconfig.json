@@ -13,12 +13,13 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "typeRoots": ["./types", "./node_modules/@types"],
-    "types": ["node", "next"],
+    "typeRoots": ["./types/node_modules/@types", "./types/node_modules", "./types", "./node_modules/next", "./node_modules/@types"],
+    "types": ["node", "next", "next/image-types"],
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "next/image-types": ["./types/next-image-types/index.d.ts"]
     },
     "plugins": [{ "name": "next" }]
   },

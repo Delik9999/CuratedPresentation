@@ -6,6 +6,7 @@ import {
   getDealerProfile,
   getProducts,
   getSelectionById,
+  registerLocalSelection,
   resolveShareToken,
 } from '@/lib/dataClient';
 import type { DealerProfile, Product, Selection } from '@/lib/types';
@@ -61,6 +62,10 @@ export default async function ShowroomPage({
 
   if (shareToken && !selection) {
     return notFound();
+  }
+
+  if (selection) {
+    registerLocalSelection(selection);
   }
 
   return (

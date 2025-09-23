@@ -6,7 +6,6 @@ import type { Product } from './types';
 const DATA_DIR = join(process.cwd(), 'data');
 const SPEC_FILE = 'libspecs.json';
 const IMAGE_BASE_URL = 'https://libandco.com/cdn/shop/files';
-const DEFAULT_IMAGE_VERSION = '1734408335';
 
 type JsonRecord = Record<string, unknown>;
 
@@ -88,14 +87,6 @@ function ensureImageUrl(rawUrl: string, version?: string): string {
 
 const STOCK_FILE_PATTERN = /^libcoststock[-\d]+\.json$/i;
 
-function stockSortKey(file: string): string {
-  const digits = file.replace(/\D/g, '');
-  if (digits.length >= 8) {
-    return digits.slice(0, 8);
-  }
-  return digits || file;
-}
-
 type StockSnapshot = {
   map: Map<string, LookupMap>;
   asOf?: string;
@@ -106,12 +97,11 @@ async function loadLatestStockSnapshot(): Promise<StockSnapshot> {
     const entries = await readdir(DATA_DIR);
     const stockFiles = entries
       .filter((file) => STOCK_FILE_PATTERN.test(file))
-      .map((file) => ({ file, key: stockSortKey(file) }))
-      .sort((a, b) => a.key.localeCompare(b.key));
+      .sort((a, b) => a.localeCompare(b));
     if (stockFiles.length === 0) {
       return { map: new Map() };
     }
-    const latestFile = stockFiles[stockFiles.length - 1].file;
+    const latestFile = stockFiles[stockFiles.length - 1];
     const raw = await readFile(join(DATA_DIR, latestFile), 'utf-8');
     const json = JSON.parse(raw) as JsonRecord;
     const asOf = toStringValue((json as { asOf?: unknown }).asOf);
@@ -182,8 +172,7 @@ export async function loadLibSpecProducts(): Promise<Product[] | null> {
         getValue<string>(lookup, ['description', 'shortdescription', 'story', 'notes'])
       );
       const video = toStringValue(getValue<string>(lookup, ['video', 'videourl', 'herovideo']));
-      const imageVersion =
-        toStringValue(getValue<string>(lookup, ['imageversion', 'version', 'v'])) ?? DEFAULT_IMAGE_VERSION;
+      const imageVersion = toStringValue(getValue<string>(lookup, ['imageversion', 'version', 'v']));
       const rawImage = toStringValue(getValue<string>(lookup, ['image', 'imageurl', 'primaryimage'])) ?? sku;
       const imageUrl = ensureImageUrl(rawImage, imageVersion);
 

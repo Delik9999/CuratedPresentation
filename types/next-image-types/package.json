@@ -1,3 +1,4 @@
 {
-  "name": "next-image-types"
+  "name": "next-image-types",
+  "types": "index.d.ts"
 }

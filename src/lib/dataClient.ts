@@ -1,6 +1,5 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { nanoid } from 'nanoid';
 import { hasSupabaseConfig } from './env';
 import { loadLibSpecProducts } from './libspecLoader';
 import type { Collection, DealerProfile, Product, Selection } from './types';
@@ -11,11 +10,6 @@ async function readJson<T>(fileName: string): Promise<T> {
   const filePath = join(dataDir, fileName);
   const raw = await readFile(filePath, 'utf-8');
   return JSON.parse(raw) as T;
-}
-
-async function writeJson<T>(fileName: string, data: T) {
-  const filePath = join(dataDir, fileName);
-  await writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
 }
 
 type CollectionMeta = {
@@ -46,7 +40,25 @@ const COLLECTION_OVERRIDES: Record<string, CollectionMeta> = {
     description: 'Studio-driven modern lighting with rechargeable and tunable LED technology.',
     sortOrder: 4,
   },
+  calcolo: {
+    heroVideoUrl: 'https://libandco.com/cdn/showroom/video/calcolo-loop.mp4',
+    description: 'Precision balanced forms with carved alabaster diffusers—heroed for Dallas Market.',
+    sortOrder: 0,
+  },
 };
+
+const selectionStore = new Map<string, Selection>();
+
+function cloneSelection(selection: Selection): Selection {
+  return {
+    ...selection,
+    lines: selection.lines.map((line) => ({
+      ...line,
+      pickedBy: [...(line.pickedBy ?? [])],
+      favorites: [...(line.favorites ?? [])],
+    })),
+  };
+}
 
 function buildCollectionsFromProducts(products: Product[]): Collection[] {
   const map = new Map<string, Collection>();
@@ -179,13 +191,8 @@ export async function getSelectionById(id: string): Promise<Selection | null> {
     } as Selection;
   }
 
-  try {
-    const selection = await readJson<Selection>('selection.example.json');
-    return selection.id === id ? selection : null;
-  } catch (error) {
-    console.error('Selection read error', error);
-    return null;
-  }
+  const cached = selectionStore.get(id);
+  return cached ? cloneSelection(cached) : null;
 }
 
 export async function upsertSelection(selection: Selection): Promise<Selection> {
@@ -204,23 +211,9 @@ export async function upsertSelection(selection: Selection): Promise<Selection> 
     return data as Selection;
   }
 
-  await writeJson('selection.example.json', selection);
-  return selection;
-}
-
-export async function createSelectionFromTemplate(
-  dealerId: string,
-  template?: Partial<Selection>
-) {
-  const selection: Selection = {
-    id: template?.id ?? `sel_${nanoid(8)}`,
-    dealerId,
-    name: template?.name ?? 'Dallas Market Selection',
-    lines: template?.lines ?? [],
-    createdAt: template?.createdAt ?? new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-  return upsertSelection(selection);
+  const copy = cloneSelection(selection);
+  selectionStore.set(copy.id, copy);
+  return cloneSelection(copy);
 }
 
 const shareCache = new Map<string, { selectionId: string; createdAt: string }>();
@@ -231,4 +224,10 @@ export function persistShareToken(token: string, selectionId: string) {
 
 export function resolveShareToken(token: string): string | null {
   return shareCache.get(token)?.selectionId ?? null;
+}
+
+export function registerLocalSelection(selection: Selection) {
+  if (hasSupabaseConfig()) return;
+  const copy = cloneSelection(selection);
+  selectionStore.set(copy.id, copy);
 }

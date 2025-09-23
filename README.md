@@ -35,11 +35,10 @@ Sample datasets live under `/data`:
 - `libspecs.json` – primary product spec source (SKU, description, pricing, flags)
 - `libcoststockYYYYMMDD.json` – latest cost/stock snapshot (the loader grabs the alphabetically last file)
 - `dealers.json`
-- `selection.example.json`
 
-When Supabase is not configured, the data client transforms `libspecs.json` (+ the most recent `libcoststock*.json`) into the internal product and collection models on the fly. Updates to a selection will overwrite `selection.example.json` locally.
+When Supabase is not configured, the data client transforms `libspecs.json` (+ the most recent `libcoststock*.json`) into the internal product and collection models on the fly. Selections and share tokens persist only in memory in this mode and reset when the dev server restarts.
 
-Product imagery resolves to `https://libandco.com/cdn/shop/files/<SKU>.jpg?v=1734408335`, so any SKU present in `libspecs.json` will display automatically using that URL pattern.
+Product imagery resolves to `https://libandco.com/cdn/shop/files/<SKU>.jpg`. If a record in `libspecs.json` includes an `imageVersion`, that value is appended as `?v=<version>`.
 
 ## Supabase (optional)
 

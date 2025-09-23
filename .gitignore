@@ -15,6 +15,7 @@
 
 # Misc
 .DS_Store
+tsconfig.tsbuildinfo
 *.pem
 .env.local
 .env.development.local
