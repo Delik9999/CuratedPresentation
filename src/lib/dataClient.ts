@@ -14,6 +14,7 @@ async function readJson<T>(fileName: string): Promise<T> {
 
 type CollectionMeta = {
   heroVideoUrl?: string;
+  fallbackVideoUrl?: string;
   description?: string;
   sortOrder?: number;
   name?: string;
@@ -21,8 +22,9 @@ type CollectionMeta = {
 
 const COLLECTION_OVERRIDES: Record<string, CollectionMeta> = {
   calcolo: {
-    heroVideoUrl: 'https://libandco.com/cdn/showroom/video/calcolo-loop.mp4',
-    description: 'Precision balanced forms with carved alabaster diffusers—heroed for Dallas Market.',
+    heroVideoUrl: '/videos/calcolo1080.mov',
+    fallbackVideoUrl: 'https://libandco.com/cdn/showroom/video/calcolo-loop.mp4',
+    description: 'Calcolo architectural series—hero cluster and statement rails.',
     sortOrder: 0,
   },
   vinci: {
@@ -83,6 +85,7 @@ function buildCollectionsFromProducts(products: Product[]): Collection[] {
       id: collectionId,
       name: collectionName,
       heroVideoUrl: override?.heroVideoUrl ?? product.videoUrls?.[0],
+      fallbackHeroVideoUrl: override?.fallbackVideoUrl,
       description: override?.description,
       sortOrder: override?.sortOrder ?? Number.MAX_SAFE_INTEGER,
     });
@@ -99,6 +102,7 @@ function buildCollectionsFromProducts(products: Product[]): Collection[] {
       id: collection.id,
       name: collection.name,
       heroVideoUrl: collection.heroVideoUrl,
+      fallbackHeroVideoUrl: collection.fallbackHeroVideoUrl,
       description: collection.description,
       sortOrder: index + 1,
     }));

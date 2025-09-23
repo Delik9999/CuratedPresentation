@@ -17,19 +17,29 @@ export function CollectionSection({
 }: CollectionSectionProps) {
   if (!products.length) return null;
 
+  const heroSources = [
+    collection.heroVideoUrl,
+    collection.fallbackHeroVideoUrl,
+  ].filter((source): source is string => Boolean(source));
+
   return (
     <section id={collection.id} className="mt-16 space-y-8">
       <div className="overflow-hidden rounded-3xl bg-slate-900 text-white shadow-lg">
         {collection.heroVideoUrl ? (
           <div className="aspect-video w-full">
-            <video
-              src={collection.heroVideoUrl}
-              className="h-full w-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-            />
+            {heroSources.length > 0 && (
+              <video
+                className="h-full w-full object-cover"
+                autoPlay
+                muted
+                loop
+                playsInline
+              >
+                {heroSources.map((source) => (
+                  <source key={source} src={source} />
+                ))}
+              </video>
+            )}
           </div>
         ) : (
           <div className="flex aspect-video items-center justify-center bg-gradient-to-r from-brand to-brand-muted">

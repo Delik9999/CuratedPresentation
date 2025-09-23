@@ -19,7 +19,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "next/image-types": ["./types/next-image-types/index.d.ts"]
+      "next/image-types": ["./types/next-image-types/index.d.ts"],
+      "framer-motion": ["./src/stubs/framerMotion"]
     },
     "plugins": [{ "name": "next" }]
   },

@@ -38,6 +38,7 @@ export type Collection = {
   id: string;
   name: string;
   heroVideoUrl?: string;
+  fallbackHeroVideoUrl?: string;
   description?: string;
   sortOrder: number;
 };

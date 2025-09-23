@@ -1,3 +1,5 @@
+import { resolve } from 'node:path';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
@@ -12,6 +14,12 @@ const nextConfig = {
         hostname: '**',
       },
     ],
+  },
+  webpack: (config) => {
+    config.resolve = config.resolve ?? {};
+    config.resolve.alias = config.resolve.alias ?? {};
+    config.resolve.alias['framer-motion'] = resolve(process.cwd(), 'src/stubs/framerMotion.tsx');
+    return config;
   },
 };
 

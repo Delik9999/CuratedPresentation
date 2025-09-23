@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import clsx from 'clsx';
 import { useAttributionName } from '@/hooks/useAttribution';
 import { useSelectionStore } from '@/hooks/useSelectionStore';
@@ -59,9 +60,8 @@ export function SkuCard({
   const primaryPriceValue = hasDealerWholesale
     ? product.price.dealerNet!
     : product.price.msrp;
-  const primaryPriceLabel = hasDealerWholesale ? 'Wholesale' : 'MSRP';
+  const primaryPriceLabel = hasDealerWholesale ? 'Wholesale' : 'Retail';
   const primaryPriceDisplay = `$${primaryPriceValue.toLocaleString()}`;
-  const msrpLabel = `$${product.price.msrp.toLocaleString()}`;
   const displayCostLabel = product.price.displayCost
     ? `$${product.price.displayCost.toLocaleString()}`
     : null;
@@ -231,10 +231,6 @@ export function SkuCard({
             <div className="grid grid-cols-2 gap-4 text-sm">
               <PriceTile label={primaryPriceLabel} value={primaryPriceDisplay} />
               {displayCostLabel && <PriceTile label="Display cost" value={displayCostLabel} />}
-              {hasDealerWholesale && <PriceTile label="MSRP" value={msrpLabel} />}
-              {product.price.map && (
-                <PriceTile label="MAP" value={`$${product.price.map.toLocaleString()}`} />
-              )}
               {availabilityInfo && (
                 <PriceTile
                   label="Availability"
@@ -387,34 +383,48 @@ function ProductOverlay({ open, onClose, children, labelledBy }: ProductOverlayP
     };
   }, [open, onClose, mounted]);
 
-  if (!mounted || !open) {
+  if (!mounted) {
     return null;
   }
 
   return createPortal(
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 px-4 py-8">
-      <div
-        role="presentation"
-        aria-hidden="true"
-        className="absolute inset-0 h-full w-full cursor-pointer"
-        onClick={onClose}
-      />
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={labelledBy}
-        className="relative z-[61] max-h-full w-full max-w-4xl overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl"
-      >
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute right-5 top-5 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-slate-500 transition hover:bg-slate-200"
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 px-4 py-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.18, ease: 'easeOut' }}
         >
-          Close
-        </button>
-        {children}
-      </div>
-    </div>,
+          <div
+            role="presentation"
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full cursor-pointer"
+            onClick={onClose}
+          />
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={labelledBy}
+            className="relative z-[61] max-h-full w-full max-w-4xl overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl"
+            initial={{ scale: 0.98, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.98, opacity: 0 }}
+            transition={{ duration: 0.18, ease: 'easeOut' }}
+          >
+            <button
+              type="button"
+              onClick={onClose}
+              className="absolute right-5 top-5 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-slate-500 transition hover:bg-slate-200"
+            >
+              Close
+            </button>
+            {children}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>,
     document.body
   );
 }
