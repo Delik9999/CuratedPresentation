@@ -13,7 +13,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "types": ["node", "next", "next/image-types"],
+    "typeRoots": ["./types", "./node_modules/@types"],
+    "types": ["node", "next"],
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {

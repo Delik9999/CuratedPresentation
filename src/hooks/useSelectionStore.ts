@@ -2,7 +2,6 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { immer } from 'zustand/middleware/immer';
 import type { Selection, SelectionLine } from '@/lib/types';
 
 export type SelectionStore = {
@@ -31,120 +30,223 @@ type PersistedState = Pick<SelectionStore, 'selection' | 'collaborators' | 'favo
 
 export const useSelectionStore = create<SelectionStore>()(
   persist(
-    immer((set) => ({
+    (set, get) => ({
       selection: undefined,
       collaborators: [],
       favoriteLedger: {},
       initialize: (selection) => {
-        set((state) => {
-          state.selection = selection;
-          state.favoriteLedger = buildLedger(selection);
-          state.collaborators = deriveCollaborators(selection);
-        });
+        set(() => ({
+          selection,
+          favoriteLedger: buildLedger(selection),
+          collaborators: deriveCollaborators(selection),
+        }));
       },
       setCollaborator: (name) => {
-        if (!name.trim()) return;
+        const trimmed = name.trim();
+        if (!trimmed) return;
         set((state) => {
-          if (!state.collaborators.includes(name)) {
-            state.collaborators.push(name);
+          if (state.collaborators.includes(trimmed)) {
+            return state;
           }
+          return { ...state, collaborators: [...state.collaborators, trimmed] };
         });
       },
       addLine: (line, actor) => {
+        const trimmedActor = actor.trim();
+        if (!trimmedActor) return;
         set((state) => {
-          if (!state.selection) return;
-          const existing = state.selection.lines.find((l) => l.sku === line.sku);
-          if (existing) {
-            existing.qty += line.qty;
-            if (!existing.pickedBy.includes(actor)) {
-              existing.pickedBy.push(actor);
-            }
+          const selection = state.selection;
+          if (!selection) return state;
+
+          const existingIndex = selection.lines.findIndex((l) => l.sku === line.sku);
+          let updatedLines: SelectionLine[];
+
+          if (existingIndex >= 0) {
+            const existing = selection.lines[existingIndex];
+            const nextLine: SelectionLine = {
+              ...existing,
+              qty: existing.qty + line.qty,
+              notes: line.notes ?? existing.notes,
+              pickedBy: existing.pickedBy.includes(trimmedActor)
+                ? existing.pickedBy
+                : [...existing.pickedBy, trimmedActor],
+            };
+            updatedLines = selection.lines.map((item, idx) =>
+              idx === existingIndex ? nextLine : item
+            );
           } else {
-            state.selection.lines.push({ ...line, pickedBy: [actor], favorites: [] });
+            updatedLines = [
+              ...selection.lines,
+              { ...line, pickedBy: [trimmedActor], favorites: [] },
+            ];
           }
-          state.selection.updatedAt = new Date().toISOString();
-          if (!state.collaborators.includes(actor)) {
-            state.collaborators.push(actor);
-          }
+
+          const updatedSelection: Selection = {
+            ...selection,
+            lines: updatedLines,
+            updatedAt: new Date().toISOString(),
+          };
+
+          const collaborators = state.collaborators.includes(trimmedActor)
+            ? state.collaborators
+            : [...state.collaborators, trimmedActor];
+
+          return {
+            ...state,
+            selection: updatedSelection,
+            collaborators,
+          };
         });
       },
       removeLine: (sku) => {
         set((state) => {
-          if (!state.selection) return;
-          state.selection.lines = state.selection.lines.filter((line) => line.sku !== sku);
-          state.selection.updatedAt = new Date().toISOString();
+          const selection = state.selection;
+          if (!selection) return state;
+          const updatedLines = selection.lines.filter((line) => line.sku !== sku);
+          if (updatedLines.length === selection.lines.length) {
+            return state;
+          }
+
+          const updatedSelection: Selection = {
+            ...selection,
+            lines: updatedLines,
+            updatedAt: new Date().toISOString(),
+          };
+
+          return {
+            ...state,
+            selection: updatedSelection,
+            favoriteLedger: buildLedger(updatedSelection),
+          };
         });
       },
       updateQty: (sku, qty) => {
         set((state) => {
-          if (!state.selection) return;
-          const line = state.selection.lines.find((l) => l.sku === sku);
-          if (!line) return;
-          line.qty = qty;
-          state.selection.updatedAt = new Date().toISOString();
+          const selection = state.selection;
+          if (!selection) return state;
+          const updatedLines = selection.lines.map((line) =>
+            line.sku === sku ? { ...line, qty } : line
+          );
+          const hasChanged = selection.lines.some((line) => line.sku === sku);
+          if (!hasChanged) {
+            return state;
+          }
+
+          const updatedSelection: Selection = {
+            ...selection,
+            lines: updatedLines,
+            updatedAt: new Date().toISOString(),
+          };
+
+          return { ...state, selection: updatedSelection };
         });
       },
       updateNotes: (sku, notes) => {
         set((state) => {
-          if (!state.selection) return;
-          const line = state.selection.lines.find((l) => l.sku === sku);
-          if (!line) return;
-          line.notes = notes;
-          state.selection.updatedAt = new Date().toISOString();
+          const selection = state.selection;
+          if (!selection) return state;
+          const updatedLines = selection.lines.map((line) =>
+            line.sku === sku ? { ...line, notes } : line
+          );
+          const hasChanged = selection.lines.some((line) => line.sku === sku);
+          if (!hasChanged) {
+            return state;
+          }
+
+          const updatedSelection: Selection = {
+            ...selection,
+            lines: updatedLines,
+            updatedAt: new Date().toISOString(),
+          };
+
+          return { ...state, selection: updatedSelection };
         });
       },
       toggleFavorite: (sku, actor, collectionId, limit = MAX_FAVORITES_PER_COLLECTION) => {
-        let result: { status: 'added' | 'removed' | 'denied'; remaining: number } = {
-          status: 'denied',
-          remaining: 0,
+        const trimmedActor = actor.trim();
+        if (!trimmedActor || !collectionId) {
+          return { status: 'denied', remaining: 0 };
+        }
+
+        const state = get();
+        const selection = state.selection;
+        if (!selection) {
+          return { status: 'denied', remaining: 0 };
+        }
+
+        const lineIndex = selection.lines.findIndex((line) => line.sku === sku);
+        if (lineIndex === -1) {
+          return { status: 'denied', remaining: 0 };
+        }
+
+        const line = selection.lines[lineIndex];
+        const ledger = state.favoriteLedger[collectionId] ?? {};
+        const currentCount = ledger[trimmedActor] ?? 0;
+        const hasFavorite = line.favorites.includes(trimmedActor);
+
+        if (!hasFavorite && currentCount >= limit) {
+          return { status: 'denied', remaining: 0 };
+        }
+
+        const updatedFavorites = hasFavorite
+          ? line.favorites.filter((name) => name !== trimmedActor)
+          : [...line.favorites, trimmedActor];
+
+        const updatedLines = selection.lines.map((item, idx) =>
+          idx === lineIndex ? { ...item, favorites: updatedFavorites } : item
+        );
+
+        const updatedSelection: Selection = {
+          ...selection,
+          lines: updatedLines,
+          updatedAt: new Date().toISOString(),
         };
-        set((state) => {
-          if (!state.selection) return;
-          const line = state.selection.lines.find((l) => l.sku === sku);
-          if (!line) return;
-          const ledger = state.favoriteLedger[collectionId] ?? {};
-          const currentCount = ledger[actor] ?? 0;
-          const hasFavorite = line.favorites.includes(actor);
 
-          if (hasFavorite) {
-            line.favorites = line.favorites.filter((name) => name !== actor);
-            ledger[actor] = Math.max(0, currentCount - 1);
-            result = { status: 'removed', remaining: limit - (ledger[actor] ?? 0) };
-          } else {
-            if (currentCount >= limit) {
-              result = { status: 'denied', remaining: 0 };
-              return;
-            }
-            line.favorites.push(actor);
-            ledger[actor] = currentCount + 1;
-            result = { status: 'added', remaining: limit - ledger[actor] };
-          }
+        const updatedLedger = buildLedger(updatedSelection);
+        const collaborators = state.collaborators.includes(trimmedActor)
+          ? state.collaborators
+          : [...state.collaborators, trimmedActor];
 
-          state.favoriteLedger[collectionId] = ledger;
-          state.selection.updatedAt = new Date().toISOString();
-          if (!state.collaborators.includes(actor)) {
-            state.collaborators.push(actor);
-          }
+        set({
+          selection: updatedSelection,
+          favoriteLedger: updatedLedger,
+          collaborators,
         });
 
-        return result;
+        const updatedCount = updatedLedger[collectionId]?.[trimmedActor] ?? 0;
+        const remaining = Math.max(0, limit - updatedCount);
+
+        return {
+          status: hasFavorite ? 'removed' : 'added',
+          remaining,
+        };
       },
       clear: () => {
         set((state) => {
-          if (!state.selection) return;
-          state.selection.lines = [];
-          state.selection.updatedAt = new Date().toISOString();
-          state.favoriteLedger = {};
+          const selection = state.selection;
+          if (!selection) return state;
+          const clearedSelection: Selection = {
+            ...selection,
+            lines: [],
+            updatedAt: new Date().toISOString(),
+          };
+
+          return {
+            ...state,
+            selection: clearedSelection,
+            favoriteLedger: {},
+          };
         });
       },
       replaceSelection: (selection) => {
-        set((state) => {
-          state.selection = selection;
-          state.favoriteLedger = buildLedger(selection);
-          state.collaborators = deriveCollaborators(selection);
-        });
+        set((state) => ({
+          ...state,
+          selection,
+          favoriteLedger: buildLedger(selection),
+          collaborators: deriveCollaborators(selection),
+        }));
       },
-    })),
+    }),
     {
       name: 'selection-store',
       partialize: (state) => ({

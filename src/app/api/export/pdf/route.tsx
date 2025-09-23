@@ -109,9 +109,14 @@ export async function POST(request: Request) {
     </Document>
   );
 
-  const buffer = await renderToBuffer(document);
-  const pdfBytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
-  return new NextResponse(pdfBytes, {
+  const renderedBuffer = (await renderToBuffer(document)) as Uint8Array;
+  const pdfArrayBuffer = renderedBuffer.buffer.slice(
+    renderedBuffer.byteOffset,
+    renderedBuffer.byteOffset + renderedBuffer.byteLength
+  ) as ArrayBuffer;
+  const pdfBlob = new Blob([pdfArrayBuffer], { type: 'application/pdf' });
+
+  return new NextResponse(pdfBlob, {
     headers: {
       'Content-Type': 'application/pdf',
       'Content-Disposition': `attachment; filename="selection-${selectionId}.pdf"`,
