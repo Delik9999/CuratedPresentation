@@ -110,7 +110,8 @@ export async function POST(request: Request) {
   );
 
   const buffer = await renderToBuffer(document);
-  return new NextResponse(buffer, {
+  const pdfBytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
+  return new NextResponse(pdfBytes, {
     headers: {
       'Content-Type': 'application/pdf',
       'Content-Disposition': `attachment; filename="selection-${selectionId}.pdf"`,
