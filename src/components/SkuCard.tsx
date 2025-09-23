@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import clsx from 'clsx';
@@ -11,12 +11,23 @@ import { describeAvailability } from '@/lib/availability';
 import type { DealerProfile, Product } from '@/lib/types';
 import { AttributionPrompt } from './AttributionPrompt';
 
+export type SkuVariantGroup = {
+  baseTitle: string;
+  variants: Array<{
+    product: Product;
+    finish: string;
+    isDefault?: boolean;
+  }>;
+};
+
 export type SkuCardProps = {
   product: Product;
   dealer?: DealerProfile | null;
   isPreviouslyPurchased?: boolean;
   variant?: 'thumb' | 'detail';
   tileShape?: 'square' | 'landscape';
+  variantGroup?: SkuVariantGroup;
+  previouslyPurchasedSkus?: string[];
 };
 
 export function SkuCard({
@@ -25,6 +36,8 @@ export function SkuCard({
   isPreviouslyPurchased,
   variant = 'thumb',
   tileShape = 'square',
+  variantGroup,
+  previouslyPurchasedSkus,
 }: SkuCardProps) {
   const selection = useSelectionStore((state) => state.selection);
   const addLine = useSelectionStore((state) => state.addLine);
@@ -33,38 +46,114 @@ export function SkuCard({
 
   const { name, saveName, ready } = useAttributionName();
   const [promptOpen, setPromptOpen] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalProduct, setModalProduct] = useState<Product | null>(null);
   const [pendingAction, setPendingAction] = useState<'add' | 'favorite' | null>(null);
   const [favoriteFeedback, setFavoriteFeedback] = useState<string | null>(null);
   const [addFeedback, setAddFeedback] = useState<string | null>(null);
+  const [hoverSku, setHoverSku] = useState<string | null>(null);
 
-  const existingLine = selection?.lines.find((line) => line.sku === product.sku);
-  const isAdded = Boolean(existingLine);
-  const isFavorited = existingLine?.favorites.includes(name ?? '') ?? false;
-  const displayBadge = dealer?.displays.some((item) => item.sku === product.sku);
-  const availabilityInfo = describeAvailability(product.availability);
+  const variantEntries = useMemo(() => {
+    if (!variantGroup) return null;
+    const map = new Map<string, SkuVariantGroup['variants'][number]>();
+    variantGroup.variants.forEach((variantOption) => {
+      map.set(variantOption.product.sku, variantOption);
+    });
+    return map;
+  }, [variantGroup]);
 
-  const modalTitleId = useMemo(
-    () => `product-${product.sku.replace(/[^a-zA-Z0-9]/g, '')}-title`,
-    [product.sku]
-  );
+  const defaultSku = useMemo(() => {
+    if (!variantGroup) return product.sku;
+    const defaultVariant = variantGroup.variants.find((variantOption) => variantOption.isDefault);
+    return (
+      defaultVariant?.product.sku ??
+      variantGroup.variants[0]?.product.sku ??
+      product.sku
+    );
+  }, [variantGroup, product.sku]);
+
+  const [activeSku, setActiveSku] = useState(defaultSku);
 
   useEffect(() => {
-    if (modalOpen) {
+    setActiveSku(defaultSku);
+  }, [defaultSku]);
+
+  useEffect(() => {
+    setHoverSku(null);
+  }, [variantGroup]);
+
+  useEffect(() => {
+    setFavoriteFeedback(null);
+    setAddFeedback(null);
+  }, [activeSku]);
+
+  useEffect(() => {
+    if (modalProduct) {
       setFavoriteFeedback(null);
       setAddFeedback(null);
     }
-  }, [modalOpen]);
+  }, [modalProduct]);
 
-  const hasDealerWholesale = Boolean(dealer?.priceTier === 'dealer' && product.price.dealerNet);
-  const primaryPriceValue = hasDealerWholesale
-    ? product.price.dealerNet!
-    : product.price.msrp;
-  const primaryPriceLabel = hasDealerWholesale ? 'Wholesale' : 'Retail';
-  const primaryPriceDisplay = `$${primaryPriceValue.toLocaleString()}`;
-  const displayCostLabel = product.price.displayCost
-    ? `$${product.price.displayCost.toLocaleString()}`
-    : null;
+  const resolveVariantProduct = (sku: string | null | undefined) => {
+    if (!sku) return undefined;
+    return variantEntries?.get(sku)?.product;
+  };
+
+  const activeProduct = variantGroup ? resolveVariantProduct(activeSku) ?? product : product;
+  const displayProduct = variantGroup
+    ? resolveVariantProduct(hoverSku) ?? activeProduct
+    : activeProduct;
+  const selectionProduct = modalProduct ?? activeProduct;
+
+  const previouslyPurchasedSet = useMemo(() => {
+    if (previouslyPurchasedSkus?.length) {
+      return new Set(previouslyPurchasedSkus);
+    }
+    if (isPreviouslyPurchased) {
+      return new Set([product.sku]);
+    }
+    return new Set<string>();
+  }, [previouslyPurchasedSkus, isPreviouslyPurchased, product.sku]);
+
+  const activePreviouslyPurchased = previouslyPurchasedSet.has(activeProduct.sku);
+  const selectionPreviouslyPurchased = previouslyPurchasedSet.has(selectionProduct.sku);
+
+  const selectionLine = selection?.lines.find((line) => line.sku === selectionProduct.sku);
+  const isAdded = Boolean(selectionLine);
+  const isFavorited = selectionLine?.favorites.includes(name ?? '') ?? false;
+  const activeDisplayBadge = dealer?.displays.some((item) => item.sku === activeProduct.sku);
+  const selectionDisplayBadge = dealer?.displays.some((item) => item.sku === selectionProduct.sku);
+
+  const activeAvailabilityInfo = describeAvailability(activeProduct.availability);
+  const selectionAvailabilityInfo = describeAvailability(selectionProduct.availability);
+
+  const getPricing = (target: Product) => {
+    const hasDealerWholesale = Boolean(dealer?.priceTier === 'dealer' && target.price.dealerNet);
+    const primaryValue = hasDealerWholesale ? target.price.dealerNet! : target.price.msrp;
+    const primaryLabel = hasDealerWholesale ? 'Wholesale' : 'Retail';
+    const displayCostLabel = target.price.displayCost
+      ? `$${target.price.displayCost.toLocaleString()}`
+      : null;
+    return {
+      primaryLabel,
+      primaryDisplay: `$${primaryValue.toLocaleString()}`,
+      displayCostLabel,
+    };
+  };
+
+  const activePricing = getPricing(activeProduct);
+  const selectionPricing = getPricing(selectionProduct);
+
+  const tileTitle = variantGroup?.baseTitle ?? displayProduct.title;
+  const fallbackTileSrc = `https://libandco.com/cdn/shop/files/${displayProduct.sku}.jpg`;
+  const tileImgSrc = displayProduct.images?.[0] ?? fallbackTileSrc;
+  const fallbackModalSrc = `https://libandco.com/cdn/shop/files/${selectionProduct.sku}.jpg`;
+  const modalImgSrc = selectionProduct.images?.[0] ?? fallbackModalSrc;
+
+  const modalReferenceSku = modalProduct?.sku ?? activeProduct.sku;
+  const modalTitleId = useMemo(
+    () => `product-${modalReferenceSku.replace(/[^a-zA-Z0-9]/g, '')}-title`,
+    [modalReferenceSku]
+  );
 
   const ensureName = (nextAction: 'add' | 'favorite') => {
     if (name) return true;
@@ -78,20 +167,20 @@ export function SkuCard({
     if (!selection) return;
     addLine(
       {
-        sku: product.sku,
+        sku: selectionProduct.sku,
         qty: 1,
-        notes: existingLine?.notes,
-        pickedBy: existingLine?.pickedBy ?? [],
-        favorites: existingLine?.favorites ?? [],
-        collectionId: product.collectionId,
+        notes: selectionLine?.notes,
+        pickedBy: selectionLine?.pickedBy ?? [],
+        favorites: selectionLine?.favorites ?? [],
+        collectionId: selectionProduct.collectionId,
       },
       actor
     );
     setCollaborator(actor);
     setAddFeedback(
-      isPreviouslyPurchased
+      selectionPreviouslyPurchased
         ? 'You’ve carried this before—great refresh option.'
-        : product.isNewIntro
+        : selectionProduct.isNewIntro
           ? 'Nice pick—new intros love a storytelling moment nearby.'
           : 'Added to your selection.'
     );
@@ -99,11 +188,11 @@ export function SkuCard({
 
   const handleFavorite = (actor: string) => {
     if (!selection) return;
-    if (!existingLine) {
+    if (!selectionLine) {
       setFavoriteFeedback('Add this piece to your selection before favoriting.');
       return;
     }
-    const result = toggleFavorite(product.sku, actor, product.collectionId);
+    const result = toggleFavorite(selectionProduct.sku, actor, selectionProduct.collectionId);
     if (result.status === 'denied') {
       setFavoriteFeedback('Max favorites reached in this collection.');
       return;
@@ -131,16 +220,13 @@ export function SkuCard({
 
   const isThumb = variant === 'thumb';
 
-  const fallbackSrc = `https://libandco.com/cdn/shop/files/${product.sku}.jpg`;
-  const imgSrc = product.images?.[0] ?? fallbackSrc;
-
   const cardClasses = isThumb
     ? clsx(
-        'group relative w-full overflow-hidden rounded-2xl text-left shadow-sm ring-1 ring-slate-200 transition',
+        'group relative w-full overflow-hidden rounded-2xl text-left shadow-sm ring-1 ring-slate-200 transition cursor-pointer',
         'hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60'
       )
     : clsx(
-        'group relative flex w-full flex-col gap-3 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60',
+        'group relative flex w-full flex-col gap-3 text-left transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60',
         'rounded-3xl bg-white/80 p-4 shadow-sm ring-1 ring-slate-200 hover:-translate-y-1 hover:shadow-lg'
       );
 
@@ -151,24 +237,39 @@ export function SkuCard({
       )
     : 'relative overflow-hidden rounded-2xl bg-slate-100 aspect-square';
 
+  const handleCardActivate = () => {
+    setModalProduct(activeProduct);
+    setHoverSku(null);
+  };
+
+  const handleCardKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleCardActivate();
+    }
+  };
+
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setModalOpen(true)}
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={handleCardActivate}
+        onKeyDown={handleCardKeyDown}
         className={cardClasses}
+        aria-label={tileTitle}
       >
         <div className={imageWrapperClasses}>
           <Image
-            src={imgSrc}
-            alt={`${product.title}`}
+            src={tileImgSrc}
+            alt={tileTitle}
             fill
             className="object-cover transition duration-300 group-hover:scale-105"
             sizes="(max-width: 768px) 90vw, 320px"
           />
           {isThumb ? (
             <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent px-3 pb-2 pt-8">
-              <h3 className="text-sm font-semibold text-white line-clamp-2">{product.title}</h3>
+              <h3 className="text-sm font-semibold text-white line-clamp-2">{tileTitle}</h3>
             </div>
           ) : (
             isAdded && (
@@ -178,122 +279,159 @@ export function SkuCard({
             )
           )}
         </div>
+        {variantGroup && (
+          <div className="flex flex-wrap gap-2 px-3 pb-3 pt-2">
+            {variantGroup.variants.map((variantOption) => {
+              const variantSku = variantOption.product.sku;
+              const isActiveVariant = variantSku === activeSku;
+              return (
+                <button
+                  key={variantSku}
+                  type="button"
+                  className={clsx(
+                    'h-6 w-6 rounded-full ring-1 ring-slate-300 transition',
+                    isActiveVariant
+                      ? 'ring-2 ring-brand ring-offset-2 ring-offset-slate-900/40'
+                      : 'hover:ring-2 hover:ring-brand/60'
+                  )}
+                  style={{ backgroundColor: mapFinishToColor(variantOption.finish) }}
+                  aria-label={variantOption.finish || `Finish ${variantSku}`}
+                  aria-pressed={isActiveVariant}
+                  onMouseEnter={() => setHoverSku(variantSku)}
+                  onMouseLeave={() => setHoverSku(null)}
+                  onBlur={() => setHoverSku(null)}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setActiveSku(variantSku);
+                  }}
+                />
+              );
+            })}
+          </div>
+        )}
         {!isThumb && (
           <div className="flex items-start justify-between gap-3">
             <div className="space-y-1">
-              <h3 className="text-base font-semibold text-slate-900">{product.title}</h3>
-              <p className="text-sm text-slate-500">{product.vendor}</p>
-              {availabilityInfo && (
-                <p className={clsx('text-xs font-semibold', availabilityInfo.toneClass)}>
-                  {availabilityInfo.label}
+              <h3 className="text-base font-semibold text-slate-900">{activeProduct.title}</h3>
+              <p className="text-sm text-slate-500">{activeProduct.vendor}</p>
+              {activeAvailabilityInfo && (
+                <p className={clsx('text-xs font-semibold', activeAvailabilityInfo.toneClass)}>
+                  {activeAvailabilityInfo.label}
                 </p>
               )}
             </div>
             <div className="flex flex-col items-end text-right text-sm font-semibold text-slate-900">
-              <span className="text-sm font-semibold text-slate-900">{primaryPriceDisplay}</span>
-              {availabilityInfo && (
-                <span className={clsx('text-xs font-semibold', availabilityInfo.toneClass)}>
-                  {availabilityInfo.label}
+              <span className="text-sm font-semibold text-slate-900">{activePricing.primaryDisplay}</span>
+              {activeAvailabilityInfo && (
+                <span className={clsx('text-xs font-semibold', activeAvailabilityInfo.toneClass)}>
+                  {activeAvailabilityInfo.label}
                 </span>
               )}
-              {availabilityInfo?.asOfLabel && (
-                <span className="text-[11px] text-slate-400">{availabilityInfo.asOfLabel}</span>
+              {activeAvailabilityInfo?.asOfLabel && (
+                <span className="text-[11px] text-slate-400">{activeAvailabilityInfo.asOfLabel}</span>
               )}
             </div>
           </div>
         )}
-      </button>
+      </div>
 
       <ProductOverlay
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
+        open={Boolean(modalProduct)}
+        onClose={() => {
+          setModalProduct(null);
+          setHoverSku(null);
+        }}
         labelledBy={modalTitleId}
       >
-        <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-          <div className="relative aspect-square overflow-hidden rounded-3xl bg-slate-100 md:aspect-[4/5]">
-            <Image
-              src={imgSrc}
-              alt={`${product.title}`}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 90vw, 480px"
-            />
-          </div>
-          <div className="flex flex-col gap-5">
-            <div>
-              <p className="text-sm uppercase tracking-[0.2em] text-slate-400">{product.vendor}</p>
-              <h2 id={modalTitleId} className="mt-1 text-3xl font-semibold text-slate-900">
-                {product.title}
-              </h2>
-              <p className="mt-2 text-sm text-slate-500">SKU {product.sku}</p>
+        {modalProduct && (
+          <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+            <div className="relative aspect-square overflow-hidden rounded-3xl bg-slate-100 md:aspect-[4/5]">
+              <Image
+                src={modalImgSrc}
+                alt={selectionProduct.title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 90vw, 480px"
+              />
             </div>
+            <div className="flex flex-col gap-5">
+              <div>
+                <p className="text-sm uppercase tracking-[0.2em] text-slate-400">{selectionProduct.vendor}</p>
+                <h2 id={modalTitleId} className="mt-1 text-3xl font-semibold text-slate-900">
+                  {selectionProduct.title}
+                </h2>
+                <p className="mt-2 text-sm text-slate-500">SKU {selectionProduct.sku}</p>
+              </div>
 
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <PriceTile label={primaryPriceLabel} value={primaryPriceDisplay} />
-              {displayCostLabel && <PriceTile label="Display cost" value={displayCostLabel} />}
-              {availabilityInfo && (
-                <PriceTile
-                  label="Availability"
-                  value={availabilityInfo.label}
-                  toneClass={availabilityInfo.toneClass}
-                  description={availabilityInfo.asOfLabel}
-                />
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <PriceTile label={selectionPricing.primaryLabel} value={selectionPricing.primaryDisplay} />
+                {selectionPricing.displayCostLabel && (
+                  <PriceTile label="Display cost" value={selectionPricing.displayCostLabel} />
+                )}
+                {selectionAvailabilityInfo && (
+                  <PriceTile
+                    label="Availability"
+                    value={selectionAvailabilityInfo.label}
+                    toneClass={selectionAvailabilityInfo.toneClass}
+                    description={selectionAvailabilityInfo.asOfLabel}
+                  />
+                )}
+              </div>
+
+              <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-wide">
+                {selectionProduct.isNewIntro && <Badge variant="brand">New intro</Badge>}
+                {selectionProduct.isMarketRecommended && <Badge variant="accent">Dallas recommended</Badge>}
+                {selectionPreviouslyPurchased && <Badge variant="success">Previously purchased</Badge>}
+                {selectionDisplayBadge && <Badge variant="neutral">On display</Badge>}
+              </div>
+
+              <div>
+                <h3 className="text-xs font-semibold uppercase tracking-widest text-slate-500">Details</h3>
+                <ul className="mt-2 space-y-1 text-sm text-slate-600">
+                  {Object.entries(selectionProduct.specs).map(([key, value]) => (
+                    <li key={key} className="flex items-center justify-between gap-6">
+                      <span className="text-slate-500">{key}</span>
+                      <span className="text-right text-slate-800">{String(value)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={onAddClick}
+                  className={clsx(
+                    'inline-flex items-center justify-center gap-2 rounded-full px-5 py-2 text-sm font-semibold transition',
+                    isAdded ? 'bg-brand/10 text-brand' : 'bg-brand text-white hover:bg-brand-muted'
+                  )}
+                >
+                  {isAdded ? '✓ Added' : 'Add to Selection'}
+                </button>
+                <button
+                  type="button"
+                  onClick={onFavoriteClick}
+                  className={clsx(
+                    'inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2 text-sm font-semibold transition',
+                    isFavorited
+                      ? 'border-brand/40 bg-brand/10 text-brand'
+                      : 'border-slate-200 bg-white text-slate-600 hover:border-brand/40 hover:text-brand'
+                  )}
+                >
+                  {isFavorited ? '★ Favorited' : '☆ Favorite'}
+                </button>
+              </div>
+              {(favoriteFeedback || addFeedback) && (
+                <p className="text-xs text-slate-500">{favoriteFeedback ?? addFeedback}</p>
+              )}
+              {selectionPreviouslyPurchased && (
+                <p className="text-xs text-slate-500">
+                  You’ve carried this before—perfect for a refreshed vignette.
+                </p>
               )}
             </div>
-
-            <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-wide">
-              {product.isNewIntro && <Badge variant="brand">New intro</Badge>}
-              {product.isMarketRecommended && <Badge variant="accent">Dallas recommended</Badge>}
-              {isPreviouslyPurchased && <Badge variant="success">Previously purchased</Badge>}
-              {displayBadge && <Badge variant="neutral">On display</Badge>}
-            </div>
-
-            <div>
-              <h3 className="text-xs font-semibold uppercase tracking-widest text-slate-500">Details</h3>
-              <ul className="mt-2 space-y-1 text-sm text-slate-600">
-                {Object.entries(product.specs).map(([key, value]) => (
-                  <li key={key} className="flex items-center justify-between gap-6">
-                    <span className="text-slate-500">{key}</span>
-                    <span className="text-right text-slate-800">{String(value)}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="flex flex-wrap gap-3">
-              <button
-                type="button"
-                onClick={onAddClick}
-                className={clsx(
-                  'inline-flex items-center justify-center gap-2 rounded-full px-5 py-2 text-sm font-semibold transition',
-                  isAdded ? 'bg-brand/10 text-brand' : 'bg-brand text-white hover:bg-brand-muted'
-                )}
-              >
-                {isAdded ? '✓ Added' : 'Add to Selection'}
-              </button>
-              <button
-                type="button"
-                onClick={onFavoriteClick}
-                className={clsx(
-                  'inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2 text-sm font-semibold transition',
-                  isFavorited
-                    ? 'border-brand/40 bg-brand/10 text-brand'
-                    : 'border-slate-200 bg-white text-slate-600 hover:border-brand/40 hover:text-brand'
-                )}
-              >
-                {isFavorited ? '★ Favorited' : '☆ Favorite'}
-              </button>
-            </div>
-            {(favoriteFeedback || addFeedback) && (
-              <p className="text-xs text-slate-500">{favoriteFeedback ?? addFeedback}</p>
-            )}
-            {isPreviouslyPurchased && (
-              <p className="text-xs text-slate-500">
-                You’ve carried this before—perfect for a refreshed vignette.
-              </p>
-            )}
           </div>
-        </div>
+        )}
       </ProductOverlay>
 
       <AttributionPrompt
@@ -316,6 +454,19 @@ export function SkuCard({
       />
     </>
   );
+}
+
+function mapFinishToColor(name: string): string {
+  const normalized = name?.toLowerCase() ?? '';
+  if (!normalized) return '#CBD5E1';
+  if (normalized.includes('soft brass') || normalized.includes('brushed brass')) return '#C3A257';
+  if (normalized.includes('antique') || normalized.includes('bronze')) return '#7A5A3A';
+  if (normalized.includes('graphite') || normalized.includes('matte black') || normalized.includes('black'))
+    return '#2E2E2E';
+  if (normalized.includes('white')) return '#E9ECEF';
+  if (normalized.includes('nickel') || normalized.includes('chrome') || normalized.includes('steel'))
+    return '#C8CDD3';
+  return '#CBD5E1';
 }
 
 type BadgeProps = {

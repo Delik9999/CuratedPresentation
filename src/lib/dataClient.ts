@@ -23,8 +23,7 @@ type CollectionMeta = {
 const COLLECTION_OVERRIDES: Record<string, CollectionMeta> = {
   calcolo: {
     heroVideoUrl: '/videos/calcolo1080.mov',
-    fallbackVideoUrl: 'https://libandco.com/cdn/showroom/video/calcolo-loop.mp4',
-    description: 'Calcolo architectural series—hero cluster and statement rails.',
+    description: 'Calcolo architectural series.',
     sortOrder: 0,
   },
   vinci: {
