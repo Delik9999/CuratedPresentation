@@ -1,17 +1,17 @@
 {
   "asOf": "2025-01-26",
   "items": [
-    { "sku": "12083-03", "available": 22, "displayEligible": true },
-    { "sku": "12084-01", "available": 18, "displayEligible": true },
-    { "sku": "12086-02", "available": 30, "displayEligible": true },
-    { "sku": "13105-04", "available": 9, "displayEligible": true },
-    { "sku": "13107-02", "available": 7, "displayEligible": true },
-    { "sku": "13108-01", "available": 14, "displayEligible": true },
-    { "sku": "14110-01", "available": 12, "displayEligible": true },
-    { "sku": "14112-02", "available": 20, "displayEligible": true },
-    { "sku": "14114-03", "available": 26, "displayEligible": true },
-    { "sku": "15021-01", "available": 5, "displayEligible": true },
-    { "sku": "15022-02", "available": 16, "displayEligible": true },
-    { "sku": "15024-01", "available": 34, "displayEligible": true }
+    { "sku": "12121-02", "available": 8, "displayEligible": true },
+    { "sku": "12121-04", "available": 14, "displayEligible": true },
+    { "sku": "12122-01", "available": 27, "displayEligible": true },
+    { "sku": "13090-01", "available": 6, "displayEligible": true },
+    { "sku": "13091-03", "available": 18, "displayEligible": true },
+    { "sku": "13092-02", "available": 11, "displayEligible": true },
+    { "sku": "14120-01", "available": 22, "displayEligible": true },
+    { "sku": "14121-02", "available": 19, "displayEligible": true },
+    { "sku": "14122-01", "available": 31, "displayEligible": true },
+    { "sku": "15030-01", "available": 5, "displayEligible": true },
+    { "sku": "15031-02", "available": 16, "displayEligible": true },
+    { "sku": "15032-01", "available": 34, "displayEligible": true }
   ]
 }

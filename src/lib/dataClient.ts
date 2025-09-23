@@ -3,12 +3,7 @@ import { join } from 'node:path';
 import { nanoid } from 'nanoid';
 import { hasSupabaseConfig } from './env';
 import { loadLibSpecProducts } from './libspecLoader';
-import type {
-  Collection,
-  DealerProfile,
-  Product,
-  Selection,
-} from './types';
+import type { Collection, DealerProfile, Product, Selection } from './types';
 
 const dataDir = join(process.cwd(), 'data');
 
@@ -21,6 +16,80 @@ async function readJson<T>(fileName: string): Promise<T> {
 async function writeJson<T>(fileName: string, data: T) {
   const filePath = join(dataDir, fileName);
   await writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
+}
+
+type CollectionMeta = {
+  heroVideoUrl?: string;
+  description?: string;
+  sortOrder?: number;
+  name?: string;
+};
+
+const COLLECTION_OVERRIDES: Record<string, CollectionMeta> = {
+  alta: {
+    heroVideoUrl: 'https://libandco.com/cdn/showroom/video/alta-loop.mp4',
+    description: 'Architectural LED statements shown at Dallas Market with tunable white control.',
+    sortOrder: 1,
+  },
+  maris: {
+    heroVideoUrl: 'https://libandco.com/cdn/showroom/video/maris-loop.mp4',
+    description: 'Layered linens and sculpted rails curated for gallery storytelling moments.',
+    sortOrder: 2,
+  },
+  northlake: {
+    heroVideoUrl: 'https://libandco.com/cdn/showroom/video/northlake-loop.mp4',
+    description: 'Coastal-ready outdoor pieces designed for salt air resilience and warm glow.',
+    sortOrder: 3,
+  },
+  liminal: {
+    heroVideoUrl: 'https://libandco.com/cdn/showroom/video/liminal-loop.mp4',
+    description: 'Studio-driven modern lighting with rechargeable and tunable LED technology.',
+    sortOrder: 4,
+  },
+};
+
+function buildCollectionsFromProducts(products: Product[]): Collection[] {
+  const map = new Map<string, Collection>();
+
+  products.forEach((product) => {
+    const collectionId = product.collectionId;
+    const override = COLLECTION_OVERRIDES[collectionId];
+    const existing = map.get(collectionId);
+    if (existing) {
+      if (!existing.heroVideoUrl) {
+        existing.heroVideoUrl = override?.heroVideoUrl ?? product.videoUrls?.[0];
+      }
+      return;
+    }
+
+    const collectionName =
+      override?.name ??
+      product.specs['Collection name'] ??
+      collectionId.replace(/-/g, ' ');
+
+    map.set(collectionId, {
+      id: collectionId,
+      name: collectionName,
+      heroVideoUrl: override?.heroVideoUrl ?? product.videoUrls?.[0],
+      description: override?.description,
+      sortOrder: override?.sortOrder ?? Number.MAX_SAFE_INTEGER,
+    });
+  });
+
+  return Array.from(map.values())
+    .sort((a, b) => {
+      const orderA = a.sortOrder ?? Number.MAX_SAFE_INTEGER;
+      const orderB = b.sortOrder ?? Number.MAX_SAFE_INTEGER;
+      if (orderA !== orderB) return orderA - orderB;
+      return a.name.localeCompare(b.name);
+    })
+    .map((collection, index) => ({
+      id: collection.id,
+      name: collection.name,
+      heroVideoUrl: collection.heroVideoUrl,
+      description: collection.description,
+      sortOrder: index + 1,
+    }));
 }
 
 export async function getCollections(): Promise<Collection[]> {
@@ -37,8 +106,13 @@ export async function getCollections(): Promise<Collection[]> {
     if (error) throw error;
     return data as Collection[];
   }
-  const local = await readJson<Collection[]>('collections.json');
-  return local.sort((a, b) => a.sortOrder - b.sortOrder);
+  const libProducts = await loadLibSpecProducts();
+  if (libProducts && libProducts.length > 0) {
+    const activeProducts = libProducts.filter((product) => product.active);
+    return buildCollectionsFromProducts(activeProducts);
+  }
+
+  return [];
 }
 
 export async function getProducts(): Promise<Product[]> {
@@ -59,8 +133,7 @@ export async function getProducts(): Promise<Product[]> {
   if (libProducts) {
     return libProducts.filter((product) => product.active);
   }
-  const products = await readJson<Product[]>('products.json');
-  return products.filter((product) => product.active);
+  return [];
 }
 
 export async function getDealerProfile(id: string): Promise<DealerProfile | null> {

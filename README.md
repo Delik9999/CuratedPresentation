@@ -10,7 +10,7 @@ A production-ready first draft of a curated B2B showroom experience built with N
 - **Dealer personalization** via `?dealer=` param that adjusts pricing tier, previous purchases, starter selections, and on-display badges.
 - **Shareable selections** through generated tokens that open a read-only view with a duplicate-and-edit flow.
 - **Exports** for PDF (via `@react-pdf/renderer`) and CSV summary downloads.
-- **Local JSON fallback** for products, collections, dealers, and selections so the repo runs without Supabase credentials.
+- **Local JSON fallback** powered by Lib&Co spec files so the repo runs without Supabase credentials.
 
 ## Getting started
 
@@ -34,12 +34,10 @@ Sample datasets live under `/data`:
 
 - `libspecs.json` – primary product spec source (SKU, description, pricing, flags)
 - `libcoststockYYYYMMDD.json` – latest cost/stock snapshot (the loader grabs the alphabetically last file)
-- `products.json` – generated fallback derived from `libspecs.json`
-- `collections.json`
 - `dealers.json`
 - `selection.example.json`
 
-When Supabase is not configured, the data client first attempts to transform `libspecs.json` (+ the most recent `libcoststock*.json`) into the internal product model. If those files are absent it falls back to `products.json`. Updates to a selection will overwrite `selection.example.json` locally.
+When Supabase is not configured, the data client transforms `libspecs.json` (+ the most recent `libcoststock*.json`) into the internal product and collection models on the fly. Updates to a selection will overwrite `selection.example.json` locally.
 
 Product imagery resolves to `https://libandco.com/cdn/shop/files/<SKU>.jpg?v=1734408335`, so any SKU present in `libspecs.json` will display automatically using that URL pattern.
 
@@ -68,5 +66,5 @@ Both endpoints expect `{ "selectionId": "..." }` in the request body.
 ## Notes
 
 - Share links are stored in-memory when using the JSON fallback and reset when the server restarts.
-- Videos are embedded from external hosts (YouTube/Vimeo) and load lazily via `<iframe>`.
+- Collection videos stream from Lib&Co-hosted MP4 loops and load lazily when the section enters the viewport.
 - Tailwind CSS handles styling; adjust `tailwind.config.ts` for theme extensions.

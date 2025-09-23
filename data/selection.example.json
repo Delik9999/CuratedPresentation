@@ -4,22 +4,22 @@
   "name": "Dallas Market Selection",
   "lines": [
     {
-      "sku": "12083-03",
+      "sku": "12121-02",
       "qty": 2,
-      "notes": "Entry vignette hero",
+      "notes": "Hero linear for lobby vignette",
       "pickedBy": ["Sierra"],
       "favorites": ["Sierra"],
-      "collectionId": "bowen"
+      "collectionId": "alta"
     },
     {
-      "sku": "13107-02",
+      "sku": "13090-01",
       "qty": 1,
-      "notes": "Storytelling rail for design desk",
+      "notes": "Anchor for storytelling space",
       "pickedBy": ["Jordan"],
       "favorites": ["Jordan", "Mia"],
-      "collectionId": "mercer"
+      "collectionId": "maris"
     }
   ],
   "createdAt": "2025-01-15T12:00:00.000Z",
-  "updatedAt": "2025-01-22T15:35:00.000Z"
+  "updatedAt": "2025-01-26T09:20:00.000Z"
 }
