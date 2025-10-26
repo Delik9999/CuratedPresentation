@@ -1,0 +1,17 @@
+{
+  "asOf": "2025-01-26",
+  "items": [
+    { "sku": "12083-03", "available": 22, "displayEligible": true },
+    { "sku": "12084-01", "available": 18, "displayEligible": true },
+    { "sku": "12086-02", "available": 30, "displayEligible": true },
+    { "sku": "13105-04", "available": 9, "displayEligible": true },
+    { "sku": "13107-02", "available": 7, "displayEligible": true },
+    { "sku": "13108-01", "available": 14, "displayEligible": true },
+    { "sku": "14110-01", "available": 12, "displayEligible": true },
+    { "sku": "14112-02", "available": 20, "displayEligible": true },
+    { "sku": "14114-03", "available": 26, "displayEligible": true },
+    { "sku": "15021-01", "available": 5, "displayEligible": true },
+    { "sku": "15022-02", "available": 16, "displayEligible": true },
+    { "sku": "15024-01", "available": 34, "displayEligible": true }
+  ]
+}

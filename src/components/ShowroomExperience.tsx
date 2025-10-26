@@ -100,7 +100,7 @@ export function ShowroomExperience({
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h1 className="text-3xl font-semibold text-slate-900">
-                {dealer ? `Welcome back—here’s your Market Selection.` : 'Curated showroom collections'}
+                {dealer ? `Welcome back—here’s your Dallas Market Selection.` : 'Curated showroom collections'}
               </h1>
               {dealer && (
                 <p className="text-sm text-slate-500">
@@ -148,7 +148,7 @@ export function ShowroomExperience({
         <div className="mt-6 space-y-16">
           <RecommendationRow
             title="Recommended from Dallas Market"
-            subtitle="Top scanned showstoppers from the floor"
+            subtitle="Top scanned showstoppers—wholesale and display costs at a glance"
             products={recommended}
             dealer={dealer}
             previouslyPurchased={previouslyPurchasedSkus}

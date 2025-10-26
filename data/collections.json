@@ -1,23 +1,30 @@
 [
   {
-    "id": "aurora",
-    "name": "Aurora Statement Pendants",
-    "heroVideoUrl": "https://player.vimeo.com/video/76979871",
-    "description": "Soft, sculptural pendants inspired by evening market vignettes.",
+    "id": "bowen",
+    "name": "Bowen Sculptural Pendants",
+    "heroVideoUrl": "https://cdn.coverr.co/videos/coverr-chandelier-in-a-hotel-lobby-7433/1080p.mp4",
+    "description": "Arching halos and columns crafted for statement entries.",
     "sortOrder": 1
   },
   {
-    "id": "atelier",
-    "name": "Atelier Mixed-Media Sconces",
-    "heroVideoUrl": "https://www.youtube.com/embed/7NOSDKb0HlU",
-    "description": "Hand-applied finishes and artisan glass for boutique displays.",
+    "id": "mercer",
+    "name": "Mercer Gallery Layering",
+    "heroVideoUrl": "https://cdn.coverr.co/videos/coverr-modern-light-fixtures-5858/1080p.mp4",
+    "description": "Tailored frames and alabaster planes for curated vignettes.",
     "sortOrder": 2
   },
   {
-    "id": "vista",
-    "name": "Vista Outdoor Revival",
-    "heroVideoUrl": "https://player.vimeo.com/video/137857207",
-    "description": "Coastal-inspired outdoor lighting with resilient finishes.",
+    "id": "harborline",
+    "name": "Harborline Outdoor Refresh",
+    "heroVideoUrl": "https://cdn.coverr.co/videos/coverr-hanging-lightbulbs-4589/1080p.mp4",
+    "description": "Coastal-influenced silhouettes ready for porch and patio displays.",
     "sortOrder": 3
+  },
+  {
+    "id": "liminal",
+    "name": "Liminal Studio Concepts",
+    "heroVideoUrl": "https://cdn.coverr.co/videos/coverr-modern-lights-7825/1080p.mp4",
+    "description": "Tunable LED pieces for flexible storytelling moments.",
+    "sortOrder": 4
   }
 ]

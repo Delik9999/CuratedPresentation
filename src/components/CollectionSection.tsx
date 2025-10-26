@@ -22,13 +22,13 @@ export function CollectionSection({
       <div className="overflow-hidden rounded-3xl bg-slate-900 text-white shadow-lg">
         {collection.heroVideoUrl ? (
           <div className="aspect-video w-full">
-            <iframe
+            <video
               src={collection.heroVideoUrl}
-              className="h-full w-full"
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowFullScreen
-              loading="lazy"
-              title={`${collection.name} hero video`}
+              className="h-full w-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
             />
           </div>
         ) : (

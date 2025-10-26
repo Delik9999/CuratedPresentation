@@ -108,7 +108,7 @@ function buildStarterSelection(dealer: DealerProfile, products: Product[]): Sele
   return {
     id: `sel_${nanoid(6)}`,
     dealerId: dealer.id,
-    name: 'Market Selection (Draft)',
+    name: 'Dallas Market Selection',
     lines,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
@@ -120,7 +120,7 @@ function createEmptySelection(dealerId: string): Selection {
   return {
     id: `sel_${nanoid(6)}`,
     dealerId,
-    name: 'Market Selection (Draft)',
+    name: 'Dallas Market Selection',
     lines: [],
     createdAt: now,
     updatedAt: now,

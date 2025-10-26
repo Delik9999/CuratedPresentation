@@ -2,6 +2,7 @@ export type PriceTiers = {
   msrp: number;
   dealerNet?: number;
   map?: number;
+  displayCost?: number;
 };
 
 export type Product = {

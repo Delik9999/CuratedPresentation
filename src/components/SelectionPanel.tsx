@@ -126,7 +126,9 @@ export function SelectionPanel({ products, readOnly = false }: SelectionPanelPro
     <div className="flex h-full flex-col">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h2 className="text-lg font-semibold text-slate-900">My Selection</h2>
+          <h2 className="text-lg font-semibold text-slate-900">
+            {selection?.name ?? 'Dallas Market Selection'}
+          </h2>
           <p className="text-xs text-slate-500">
             {lines.length} SKU{lines.length === 1 ? '' : 's'} · {totalItems} item{totalItems === 1 ? '' : 's'}
           </p>

@@ -2,6 +2,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { nanoid } from 'nanoid';
 import { hasSupabaseConfig } from './env';
+import { loadLibSpecProducts } from './libspecLoader';
 import type {
   Collection,
   DealerProfile,
@@ -53,6 +54,10 @@ export async function getProducts(): Promise<Product[]> {
       .eq('active', true);
     if (error) throw error;
     return data as Product[];
+  }
+  const libProducts = await loadLibSpecProducts();
+  if (libProducts) {
+    return libProducts.filter((product) => product.active);
   }
   const products = await readJson<Product[]>('products.json');
   return products.filter((product) => product.active);
@@ -137,7 +142,7 @@ export async function createSelectionFromTemplate(
   const selection: Selection = {
     id: template?.id ?? `sel_${nanoid(8)}`,
     dealerId,
-    name: template?.name ?? 'Market Selection (Draft)',
+    name: template?.name ?? 'Dallas Market Selection',
     lines: template?.lines ?? [],
     createdAt: template?.createdAt ?? new Date().toISOString(),
     updatedAt: new Date().toISOString(),
