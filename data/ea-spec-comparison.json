@@ -1,0 +1,344 @@
+{
+  "g9": {
+    "headline": "G9 Capsule — Visible-Lamp Chandeliers & Decorative Sconces",
+    "subheadline": "When the bulb IS the design element, spec matters. CRI, dimming range, and compact form factor define the finished look.",
+    "specs": [
+      {
+        "label": "CRI",
+        "industryStandard": { "value": "80+", "note": "Typical commodity LED" },
+        "professionalSpec": { "value": "95+", "note": "True color rendering" },
+        "emphasis": "high"
+      },
+      {
+        "label": "R9 (Red Rendering)",
+        "industryStandard": { "value": "0–20", "note": "Weak reds, muddy skin tones" },
+        "professionalSpec": { "value": "55+", "note": "Rich reds, natural skin tones" },
+        "emphasis": "high"
+      },
+      {
+        "label": "Dimming Range",
+        "industryStandard": { "value": "10–100%", "note": "Visible flicker below 15%" },
+        "professionalSpec": { "value": "5–100%", "note": "Smooth, flicker-free" },
+        "emphasis": "medium"
+      },
+      {
+        "label": "Rated Life",
+        "industryStandard": { "value": "15,000 hrs", "note": "Frequent replacement" },
+        "professionalSpec": { "value": "36,000 hrs", "note": "Install and forget" },
+        "emphasis": "medium"
+      },
+      {
+        "label": "Form Factor",
+        "industryStandard": { "value": "Oversized capsule", "note": "May not fit decorative fixtures" },
+        "professionalSpec": { "value": "True halogen size", "note": "Direct retrofit, no clearance issues" },
+        "emphasis": "high"
+      },
+      {
+        "label": "Warranty",
+        "industryStandard": { "value": "1–2 years", "note": "Limited coverage" },
+        "professionalSpec": { "value": "Limited Lifetime", "note": "Full replacement program" },
+        "emphasis": "low"
+      }
+    ],
+    "roiCallout": {
+      "headline": "The Math on Callbacks",
+      "bullets": [
+        "Average callback labor cost: $85–$150 per visit",
+        "Dimming complaints are the #1 LED callback category",
+        "One avoided callback pays for the premium on 10+ bulbs",
+        "Fewer color complaints = fewer credits issued to homeowners"
+      ]
+    },
+    "whenToUse": [
+      { "label": "Luxury Chandeliers", "description": "Visible-lamp fixtures where the bulb shape and light quality define the design" },
+      { "label": "Hospitality & Retail", "description": "High-CRI environments where merchandise and food must look their best" },
+      { "label": "Designer Installs", "description": "Spec'd projects where the designer has called out CRI or dimming requirements" },
+      { "label": "Dimmer-Heavy Rooms", "description": "Dining rooms, bedrooms, and media spaces that live below 30% most of the time" }
+    ]
+  },
+  "mr16": {
+    "headline": "MR16 — Landscape, Track & Directional Accent",
+    "subheadline": "Beam control, CRI, and outdoor durability separate professional-grade MR16 from commodity replacements.",
+    "specs": [
+      {
+        "label": "CRI",
+        "industryStandard": { "value": "80+", "note": "Acceptable for general use" },
+        "professionalSpec": { "value": "95+", "note": "Gallery-grade rendering" },
+        "emphasis": "high"
+      },
+      {
+        "label": "Beam Options",
+        "industryStandard": { "value": "36° flood only", "note": "One-size-fits-all" },
+        "professionalSpec": { "value": "15° / 25° / 36°", "note": "Narrow spot to wide flood" },
+        "emphasis": "high"
+      },
+      {
+        "label": "R9 (Red Rendering)",
+        "industryStandard": { "value": "0–15", "note": "Washed-out hardscape" },
+        "professionalSpec": { "value": "50+", "note": "Rich stone and foliage color" },
+        "emphasis": "medium"
+      },
+      {
+        "label": "Landscape Durability",
+        "industryStandard": { "value": "Indoor rated", "note": "Corrodes in wet locations" },
+        "professionalSpec": { "value": "Sealed lens, IP65", "note": "Built for buried and wet fixtures" },
+        "emphasis": "high"
+      },
+      {
+        "label": "Rated Life",
+        "industryStandard": { "value": "15,000 hrs", "note": "Annual replacement cycle" },
+        "professionalSpec": { "value": "36,000 hrs", "note": "Multi-year landscape installs" },
+        "emphasis": "medium"
+      },
+      {
+        "label": "Warranty",
+        "industryStandard": { "value": "1–2 years", "note": "Limited coverage" },
+        "professionalSpec": { "value": "Limited Lifetime", "note": "Full replacement program" },
+        "emphasis": "low"
+      }
+    ],
+    "roiCallout": {
+      "headline": "The Math on Callbacks",
+      "bullets": [
+        "Landscape callback: $150+ per truck roll (time, gas, crew)",
+        "Replacing 20 commodity MR16s annually vs. zero with pro-spec",
+        "Beam spread mismatch = re-aim or re-lamp the entire run",
+        "One landscape re-lamp visit covers the premium on 30+ bulbs"
+      ]
+    },
+    "whenToUse": [
+      { "label": "Landscape Lighting", "description": "Path, accent, and architectural wash where durability and beam control matter" },
+      { "label": "Track & Recessed", "description": "Retail displays, art lighting, and gallery walls demanding precise beam angles" },
+      { "label": "Outdoor Hospitality", "description": "Restaurant patios, hotel entries, and pool areas exposed to weather" },
+      { "label": "High-End Residential", "description": "Accent lighting where the homeowner will notice color quality" }
+    ]
+  },
+  "g4": {
+    "headline": "G4 Bi-Pin — Low-Voltage Pendants & Under-Cabinet",
+    "subheadline": "Compact form factor and AC/DC compatibility are critical in low-voltage fixtures. The wrong G4 means flicker, buzz, or no-start.",
+    "specs": [
+      {
+        "label": "CRI",
+        "industryStandard": { "value": "80+", "note": "Passable color" },
+        "professionalSpec": { "value": "95+", "note": "True color fidelity" },
+        "emphasis": "high"
+      },
+      {
+        "label": "AC/DC Compatibility",
+        "industryStandard": { "value": "AC or DC only", "note": "Must match transformer type" },
+        "professionalSpec": { "value": "AC/DC universal", "note": "Works with any 12V source" },
+        "emphasis": "high"
+      },
+      {
+        "label": "Dimming on Low Voltage",
+        "industryStandard": { "value": "Often incompatible", "note": "Buzz, flicker, drop-out" },
+        "professionalSpec": { "value": "ELV / MLV compatible", "note": "Smooth dimming on electronic & magnetic" },
+        "emphasis": "high"
+      },
+      {
+        "label": "Form Factor",
+        "industryStandard": { "value": "Bulky capsule", "note": "May protrude from fixture" },
+        "professionalSpec": { "value": "True halogen envelope", "note": "Fits tight spaces, no protrusion" },
+        "emphasis": "medium"
+      },
+      {
+        "label": "Rated Life",
+        "industryStandard": { "value": "10,000 hrs", "note": "Short cycle" },
+        "professionalSpec": { "value": "36,000 hrs", "note": "3× longer between replacements" },
+        "emphasis": "medium"
+      },
+      {
+        "label": "Warranty",
+        "industryStandard": { "value": "1–2 years", "note": "Limited coverage" },
+        "professionalSpec": { "value": "Limited Lifetime", "note": "Full replacement program" },
+        "emphasis": "low"
+      }
+    ],
+    "roiCallout": {
+      "headline": "The Math on Callbacks",
+      "bullets": [
+        "G4 flicker/buzz is the hardest LED complaint to diagnose remotely",
+        "Average troubleshooting visit: $120+ before the bulb is even replaced",
+        "AC/DC mismatch causes 40%+ of low-voltage LED failures",
+        "Universal compatibility eliminates the #1 diagnostic headache"
+      ]
+    },
+    "whenToUse": [
+      { "label": "Crystal Pendants", "description": "Where the tiny bulb is visible through glass and size matters" },
+      { "label": "Under-Cabinet", "description": "Puck lights and linear strips running on 12V transformers" },
+      { "label": "Older Transformers", "description": "Retrofit into existing magnetic transformers without rewiring" },
+      { "label": "Multi-Head Fixtures", "description": "Chandeliers with 10+ lamps where one bad bulb ruins the look" }
+    ]
+  },
+  "e12": {
+    "headline": "E12 Candelabra — Decorative Chandeliers & Wall Sconces",
+    "subheadline": "The most visible bulb in residential lighting. CRI, dimming warmth, and filament aesthetics make or break the design.",
+    "specs": [
+      {
+        "label": "CRI",
+        "industryStandard": { "value": "80+", "note": "Adequate for covered shades" },
+        "professionalSpec": { "value": "95+", "note": "Flawless color under any shade" },
+        "emphasis": "high"
+      },
+      {
+        "label": "R9 (Red Rendering)",
+        "industryStandard": { "value": "0–15", "note": "Cool, clinical undertone" },
+        "professionalSpec": { "value": "55+", "note": "Warm, inviting ambiance" },
+        "emphasis": "high"
+      },
+      {
+        "label": "Dimming Range",
+        "industryStandard": { "value": "15–100%", "note": "Turns off before reaching mood level" },
+        "professionalSpec": { "value": "5–100%", "note": "Candlelight glow at lowest setting" },
+        "emphasis": "high"
+      },
+      {
+        "label": "Warm Dim",
+        "industryStandard": { "value": "Fixed CCT", "note": "Stays cool white when dimmed" },
+        "professionalSpec": { "value": "3000K → 2200K", "note": "Mimics incandescent warm shift" },
+        "emphasis": "medium"
+      },
+      {
+        "label": "Rated Life",
+        "industryStandard": { "value": "15,000 hrs", "note": "Ladder required for replacement" },
+        "professionalSpec": { "value": "36,000 hrs", "note": "Install in high ceilings with confidence" },
+        "emphasis": "medium"
+      },
+      {
+        "label": "Warranty",
+        "industryStandard": { "value": "1–2 years", "note": "Limited coverage" },
+        "professionalSpec": { "value": "Limited Lifetime", "note": "Full replacement program" },
+        "emphasis": "low"
+      }
+    ],
+    "roiCallout": {
+      "headline": "The Math on Callbacks",
+      "bullets": [
+        "Chandelier re-lamp: $200+ with scaffolding for foyer installs",
+        "\"It doesn't dim right\" is the most common post-install complaint",
+        "Color mismatch between bulbs visible in multi-arm fixtures",
+        "Warm dim eliminates the \"too blue when dimmed\" objection entirely"
+      ]
+    },
+    "whenToUse": [
+      { "label": "Foyer Chandeliers", "description": "High-ceiling installs where re-lamping requires equipment and labor" },
+      { "label": "Dining Rooms", "description": "Where dimming to candlelight ambiance is expected nightly" },
+      { "label": "Visible-Bulb Sconces", "description": "Bare-lamp and clear-glass designs where bulb aesthetics matter" },
+      { "label": "Film & Media Spaces", "description": "Homes with media rooms or content creators needing high-CRI light" }
+    ]
+  },
+  "gy6-35": {
+    "headline": "GY6.35 Bi-Pin — Low-Voltage Pendants & Specialty Fixtures",
+    "subheadline": "The higher-wattage cousin of G4. Same AC/DC challenges, higher stakes — these run hotter and fail harder when spec'd wrong.",
+    "specs": [
+      {
+        "label": "CRI",
+        "industryStandard": { "value": "80+", "note": "Passable color" },
+        "professionalSpec": { "value": "95+", "note": "True color fidelity" },
+        "emphasis": "high"
+      },
+      {
+        "label": "AC/DC Compatibility",
+        "industryStandard": { "value": "AC or DC only", "note": "Wrong match = immediate failure" },
+        "professionalSpec": { "value": "AC/DC universal", "note": "Works with any 12V source" },
+        "emphasis": "high"
+      },
+      {
+        "label": "Dimming on Low Voltage",
+        "industryStandard": { "value": "Inconsistent", "note": "Audible buzz on most dimmers" },
+        "professionalSpec": { "value": "ELV / MLV compatible", "note": "Silent, smooth dimming curve" },
+        "emphasis": "high"
+      },
+      {
+        "label": "Heat Management",
+        "industryStandard": { "value": "Basic thermal", "note": "Runs hot, shortened life" },
+        "professionalSpec": { "value": "Ceramic + aluminum", "note": "Cool operation, full rated life" },
+        "emphasis": "medium"
+      },
+      {
+        "label": "Rated Life",
+        "industryStandard": { "value": "10,000 hrs", "note": "Short cycle in enclosed fixtures" },
+        "professionalSpec": { "value": "36,000 hrs", "note": "Reliable in enclosed housings" },
+        "emphasis": "medium"
+      },
+      {
+        "label": "Warranty",
+        "industryStandard": { "value": "1–2 years", "note": "Limited coverage" },
+        "professionalSpec": { "value": "Limited Lifetime", "note": "Full replacement program" },
+        "emphasis": "low"
+      }
+    ],
+    "roiCallout": {
+      "headline": "The Math on Callbacks",
+      "bullets": [
+        "GY6.35 failures often take out the transformer too — $300+ repair",
+        "Buzz complaints from low-voltage dimming are nearly impossible to solve remotely",
+        "Universal AC/DC compatibility eliminates transformer matching guesswork",
+        "Proper thermal management prevents cascade failures in multi-lamp fixtures"
+      ]
+    },
+    "whenToUse": [
+      { "label": "Statement Pendants", "description": "High-output decorative fixtures where lumens and color both matter" },
+      { "label": "Retrofit Projects", "description": "Replacing halogen GY6.35 in existing fixtures without rewiring" },
+      { "label": "Enclosed Housings", "description": "Fixtures with tight enclosures where heat buildup kills commodity bulbs" },
+      { "label": "Shallow Recessed", "description": "Low-profile housings where compact form factor is non-negotiable" }
+    ]
+  },
+  "e26": {
+    "headline": "E26 Medium Base — The Commodity Uplift Opportunity",
+    "subheadline": "Everyone stocks E26. The question is whether your E26 makes the install look like a million bucks or a builder-grade flip.",
+    "specs": [
+      {
+        "label": "CRI",
+        "industryStandard": { "value": "80+", "note": "Big-box commodity level" },
+        "professionalSpec": { "value": "95+", "note": "Design-grade color accuracy" },
+        "emphasis": "high"
+      },
+      {
+        "label": "R9 (Red Rendering)",
+        "industryStandard": { "value": "0–10", "note": "Skin looks grey, wood looks flat" },
+        "professionalSpec": { "value": "50+", "note": "Rich wood tones, healthy skin" },
+        "emphasis": "high"
+      },
+      {
+        "label": "Dimming Range",
+        "industryStandard": { "value": "15–100%", "note": "Steps, flicker at low end" },
+        "professionalSpec": { "value": "5–100%", "note": "Smooth full-range dimming" },
+        "emphasis": "medium"
+      },
+      {
+        "label": "Rated Life",
+        "industryStandard": { "value": "15,000 hrs", "note": "Standard commodity" },
+        "professionalSpec": { "value": "36,000 hrs", "note": "2× longer service life" },
+        "emphasis": "medium"
+      },
+      {
+        "label": "Color Consistency",
+        "industryStandard": { "value": "±200K tolerance", "note": "Noticeable variation bulb-to-bulb" },
+        "professionalSpec": { "value": "3-step MacAdam", "note": "Imperceptible variation" },
+        "emphasis": "medium"
+      },
+      {
+        "label": "Warranty",
+        "industryStandard": { "value": "1–2 years", "note": "Limited coverage" },
+        "professionalSpec": { "value": "Limited Lifetime", "note": "Full replacement program" },
+        "emphasis": "low"
+      }
+    ],
+    "roiCallout": {
+      "headline": "The Math on Callbacks",
+      "bullets": [
+        "E26 is the highest-volume base — small per-bulb premium, massive quality uplift",
+        "Color inconsistency across a room is the subtlest but most damaging complaint",
+        "3-step MacAdam binning ensures every bulb matches — zero re-sorting",
+        "Premium E26 in a builder fixture makes a $50 light look like $200"
+      ]
+    },
+    "whenToUse": [
+      { "label": "Whole-Home Packages", "description": "When the builder or designer specs every socket in the house" },
+      { "label": "Visible Filament", "description": "Edison-style and decorative bulbs where aesthetics are front and center" },
+      { "label": "Open-Plan Living", "description": "Where multiple fixtures in one sightline must match perfectly" },
+      { "label": "Luxury Staging", "description": "Model homes and staging where first impressions drive the sale" }
+    ]
+  }
+}

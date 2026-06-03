@@ -29,11 +29,20 @@ export default async function ShowroomPage({
   const selectionId = searchParams.selection;
   const highlightNewIntros = searchParams.view === 'new-intros';
 
-  const [collections, products, dealer] = await Promise.all([
+  const [allCollections, allProducts, dealer] = await Promise.all([
     getCollections(),
     getProducts(),
     dealerId ? getDealerProfile(dealerId) : Promise.resolve(null),
   ]);
+
+  // Filter products by dealer's vendor list (if set)
+  const products = dealer?.vendors?.length
+    ? allProducts.filter((p) => dealer.vendors!.includes(p.vendor))
+    : allProducts;
+
+  // Only show collections that have at least one matching product
+  const productCollectionIds = new Set(products.map((p) => p.collectionId));
+  const collections = allCollections.filter((c) => productCollectionIds.has(c.id));
 
   const recommended = products.filter((product) => product.isMarketRecommended).slice(0, 5);
   const previousBest = derivePreviousBest(products, dealer);

@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
     "allowJs": false,
     "skipLibCheck": true,
     "strict": true,
@@ -13,13 +17,29 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "src",
     "paths": {
-      "@/*": ["*"]
-    }
+      "@/*": [
+        "*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["next-env.d.ts", "src/**/*", "next.config.mjs"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "src/**/*",
+    "next.config.mjs",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

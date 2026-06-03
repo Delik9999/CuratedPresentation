@@ -26,5 +26,41 @@
     "heroVideoUrl": "https://cdn.coverr.co/videos/coverr-modern-lights-7825/1080p.mp4",
     "description": "Tunable LED pieces for flexible storytelling moments.",
     "sortOrder": 4
+  },
+  {
+    "id": "g9",
+    "name": "Emery Allen G9",
+    "description": "Professional-grade G9 capsule LEDs for visible-lamp chandeliers and decorative sconces.",
+    "sortOrder": 10
+  },
+  {
+    "id": "mr16",
+    "name": "Emery Allen MR16",
+    "description": "High-CRI MR16 LEDs for landscape, track, and directional accent lighting.",
+    "sortOrder": 11
+  },
+  {
+    "id": "g4",
+    "name": "Emery Allen G4",
+    "description": "Compact G4 bi-pin LEDs with universal AC/DC compatibility for low-voltage fixtures.",
+    "sortOrder": 12
+  },
+  {
+    "id": "e12",
+    "name": "Emery Allen E12",
+    "description": "Premium E12 candelabra LEDs for decorative chandeliers and wall sconces.",
+    "sortOrder": 13
+  },
+  {
+    "id": "gy6-35",
+    "name": "Emery Allen GY6.35",
+    "description": "High-output GY6.35 bi-pin LEDs for specialty and low-voltage pendant fixtures.",
+    "sortOrder": 14
+  },
+  {
+    "id": "e26",
+    "name": "Emery Allen E26",
+    "description": "Design-grade E26 medium base LEDs — the commodity uplift opportunity.",
+    "sortOrder": 15
   }
 ]

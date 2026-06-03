@@ -8,6 +8,7 @@ import type {
   DealerProfile,
   Product,
   Selection,
+  SpecComparisonConfig,
 } from './types';
 
 const dataDir = join(process.cwd(), 'data');
@@ -23,7 +24,30 @@ async function writeJson<T>(fileName: string, data: T) {
   await writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
 }
 
+async function loadSpecComparisonData(): Promise<Record<string, SpecComparisonConfig>> {
+  try {
+    return await readJson<Record<string, SpecComparisonConfig>>('ea-spec-comparison.json');
+  } catch {
+    return {};
+  }
+}
+
+function mergeSpecComparison(
+  collections: Collection[],
+  specData: Record<string, SpecComparisonConfig>
+): Collection[] {
+  return collections.map((col) => {
+    const config = specData[col.id];
+    if (config) {
+      return { ...col, specComparison: config };
+    }
+    return col;
+  });
+}
+
 export async function getCollections(): Promise<Collection[]> {
+  let collections: Collection[];
+
   if (hasSupabaseConfig()) {
     const { createClient } = await import('@supabase/supabase-js');
     const client = createClient(
@@ -35,10 +59,14 @@ export async function getCollections(): Promise<Collection[]> {
       .select('*')
       .order('sortOrder', { ascending: true });
     if (error) throw error;
-    return data as Collection[];
+    collections = data as Collection[];
+  } else {
+    const local = await readJson<Collection[]>('collections.json');
+    collections = local.sort((a, b) => a.sortOrder - b.sortOrder);
   }
-  const local = await readJson<Collection[]>('collections.json');
-  return local.sort((a, b) => a.sortOrder - b.sortOrder);
+
+  const specData = await loadSpecComparisonData();
+  return mergeSpecComparison(collections, specData);
 }
 
 export async function getProducts(): Promise<Product[]> {
